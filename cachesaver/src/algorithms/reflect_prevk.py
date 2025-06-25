@@ -68,7 +68,7 @@ class AlgorithmReflectPrevK(Algorithm):
         random.seed(randomness)
         state = state.clone(randomness=random.randint(0, MAX_SEED))
         
-        logger.info(f'reflect_prevk_logs-{idx}-fleet: {log_agents([self.agents])}')
+        logger.info(f'reflect_prevk_logs-{idx}-fleet: {log_agents([{"agent": self.step_agent, "params": self.step_params, "num_agents": 1}])}')
         
         print('initial problem state:')
         print(state.puzzle)
@@ -103,6 +103,7 @@ class AlgorithmReflectPrevK(Algorithm):
             logger.info(f"reflect_prevk_logs-{idx}-{step}-agentouts: {log_states(new_states)}")
             logger.info(f"reflect_prevk_logs-{idx}-{step}-statewins: {[self.env.evaluate(s)[1] == 1 for s in new_states]}")
             logger.info(f"reflect_prevk_logs-{idx}-{step}-statefails: {[self.env.is_final(s) for s in new_states]}")
+            logger.info(f"reflect_prevk_logs-{idx}-{step}-reflections: {[len(s.reflections) for s in new_states]}")
             
             if self.env.evaluate(state)[1] == 1:
                 solved = True
