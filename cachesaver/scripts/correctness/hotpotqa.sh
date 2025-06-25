@@ -5,7 +5,7 @@ benchmarks=("hotpotqa")
 
 # Define methods
 # methods=("react" "rap")
-methods=("reflect_summary")
+methods=("reflect_prev_k")
 
 # Define models
 provider="openai"

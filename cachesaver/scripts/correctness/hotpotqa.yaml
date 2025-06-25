@@ -43,3 +43,10 @@ reflect_summary:
   origin: 10
   min_steps: 1
   num_evaluations: 3
+
+reflect_prev_k:
+  num_steps: 20
+  origin: 10
+  min_steps: 1
+  num_evaluations: 3
+  k: 3

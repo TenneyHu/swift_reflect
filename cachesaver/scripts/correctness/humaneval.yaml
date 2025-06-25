@@ -37,7 +37,14 @@ rap:
   exploration_constant: 1.0
 
 reflect_summary:
-  num_steps: 10
+  num_steps: 4
   num_evaluations: 3
   min_steps: 1
   origin: 150
+
+reflect_prev_k:
+  num_steps: 4
+  num_evaluations: 3
+  min_steps: 1
+  origin: 150
+  k: 3

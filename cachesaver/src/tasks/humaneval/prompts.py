@@ -150,6 +150,20 @@ Previous trial:
 function impl: {function_impl}
 Reflection:"""
 
+act_with_summary = """Here is a summary of reflections from previous attempts:
+{summary}
+
+Based on this, please provide a new implementation for:
+{current_state}
+"""
+
+summarize_reflections = """You are a programming assistant. You will be given a list of reflections on previous failed attempts to solve a programming problem. Your task is to synthesize these reflections into a short, concise summary that can guide the next attempt. The summary should highlight the key mistakes and suggest a better approach.
+
+Reflections:
+{reflections}
+
+Concise Summary:"""
+
 examples_reflect_py = [
 '''Previous trial:
 function impl:
@@ -379,37 +393,6 @@ Corrections required:
 1. Incorrect loop bounds <explanation> The loop `for _ in 2..n` iterates from 2 up to `n-1`. If `n` is 2, the loop doesn't run, and `b` (which is 1, the 1st Fibonacci number) is returned. If `n` is 3, the loop runs once (for `_ = 2`), `b` becomes `0+1=1` (still the 1st Fibonacci), which is incorrect for F(3). To compute the Nth Fibonacci number, the loop should effectively run `n-1` times after establishing F(0) and F(1). A common fix is to loop `for _ in 2..=n` or adjust the initial values/return value. For instance, returning `a` if `n=0` and `b` otherwise after the loop `for _ in 0..n-1 { ... }` (with `a=0, b=1` initially for n>0) or ensuring the loop iterates correctly to compute up to the Nth term. <solution> Loop `for _ in 2..=n` or adjust the initial values/return value. For instance, returning `a` if `n=0` and `b` otherwise after the loop `for _ in 0..n-1 { ... }` (with `a=0, b=1` initially for n>0) or ensuring the loop iterates correctly to compute up to the Nth term.
 '''
 ]
-
-
-
-
-summary_act_prompt_py = """You are an AI that only responds with only python code. You are given a function to implement.
-You have tried to solve this problem before and failed. Here is a summary of your past reflections:
-{summary}
-
-Based on this summary, attempt to solve the problem again.
-
-Problem:
-{puzzle}
-"""
-
-summary_act_prompt_rs = """You are an AI that only responds with only rust code. You are given a function to implement.
-You have tried to solve this problem before and failed. Here is a summary of your past reflections:
-{summary}
-
-Based on this summary, attempt to solve the problem again.
-
-Problem:
-{puzzle}
-"""
-
-summarize_reflections_prompt = """You are a programming assistant. You will be given a series of reflections from previous failed attempts at solving a coding problem. Your task is to synthesize these reflections into a concise summary that is one or two paragraphs long. The summary should highlight the key issues and suggest a path forward.
-
-Reflections:
-{reflections}
-
-Concise Summary:
-"""
 
 
 

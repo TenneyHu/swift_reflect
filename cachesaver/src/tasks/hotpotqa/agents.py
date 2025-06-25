@@ -750,7 +750,10 @@ class AgentReflectPrevKHotpotQA(StateReturningAgent):
                 randomness=state.randomness,
                 reflections=[thoughts.pop(0)] + state.reflections[:k], # Only keep last k reflections
                 parent=state,
+                summary=state.summary,
             )
+            
+        print(f'length of reflections: {len(states[0].reflections)}')
 
         return states
 

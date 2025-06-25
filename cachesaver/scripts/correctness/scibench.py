@@ -150,6 +150,24 @@ def build_method(method_name: str, params: DecodingParameters, api: API, config:
             origin=config.reflect_summary.origin,
             min_steps=config.reflect_summary.min_steps,
         )
+        
+    elif method_name=="reflect_prev_k":
+        agents=AgentDictReflectPrevK(
+            step=AgentReflectPrevKSciBench,
+            step_params=params,
+            eval_params=params,
+            evaluate=AgentEvaluateSciBench,
+        )
+        method=AlgorithmReflectPrevK(
+            model=api,
+            agents=agents,
+            env=EnvironmentSciBench,
+            num_steps=config.reflect_prev_k.num_steps,
+            num_evaluations=config.reflect_prev_k.num_evaluations,
+            origin=config.reflect_prev_k.origin,
+            min_steps=config.reflect_prev_k.min_steps,
+            k=config.reflect_prev_k.k,
+        )
 
     else:
         raise NotImplementedError(f"Method {method_name} is not implemented yet.")

@@ -16,7 +16,7 @@ class BenchmarkHumanEval(Benchmark):
         data = list(zip(df['index'], df['prompt'], df['entry_point'], df['test']))
 
         if split == "mini":
-            self.data = random.sample(data, 15)
+            self.data = random.sample(data, 3)
         elif split == "train":
             self.data = random.sample(data, 50)
         elif split == "validation":

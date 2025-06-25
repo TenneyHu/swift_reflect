@@ -7,3 +7,4 @@ from .rap import AlgorithmRAP, AgentDictRAP
 from .react import AgentDictReact, AlgorithmReact
 from .reflexion_react import AgentDictReflexionReact, AlgorithmReflexionReact
 from .reflect_summary import AgentDictReflectSummary, AlgorithmReflectSummary
+from .reflect_prevk import AgentDictReflectPrevK, AlgorithmReflectPrevK

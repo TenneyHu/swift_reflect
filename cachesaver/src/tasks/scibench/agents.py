@@ -611,6 +611,72 @@ class AgentReflectSummarySciBench(StateReturningAgent):
             summary_idx += 1
             
         return states
+    
+class AgentReflectPrevKSciBench(StateReturningAgent):
+    @staticmethod
+    async def act(
+        model: Model,
+        state: StateSciBench,
+        n: int,
+        namespace: str,
+        k: int, # Number of reflections to keep
+        request_id: str,
+        params: DecodingParameters,
+    ) -> List[StateSciBench]:
+        actions = await AgentActSciBench.act(
+            model=model,
+            state=state,
+            n=n,
+            namespace=namespace,
+            request_id=request_id,
+            params=params,
+        )
+
+        # additional terminal reflection logic
+        states = [EnvironmentSciBench.step(state, action) for action in actions]
+
+        reflection_coroutines = []
+        reflected_state_idxs = []
+        for i, s in enumerate(states):
+            if not EnvironmentSciBench.is_final(s):
+                continue
+
+            # found a successful state
+            if EnvironmentSciBench.evaluate(s)[0] == 1:
+                return [s]
+            
+            # if the state has failed, we need to reflect on it
+            reflection_coroutines.append(
+                AgentReflectSciBench.act(
+                    model=model,
+                    state=s,
+                    n=1,
+                    namespace=namespace,
+                    request_id=f"{request_id}-reflect-{i}",
+                    params=params,
+                )
+            )
+
+            reflected_state_idxs.append(i)
+        
+        if len(reflection_coroutines) == 0:
+            return states
+        
+        gathered_thoughts = await asyncio.gather(*reflection_coroutines)
+        
+        thought_idx = 0
+        for list_idx in reflected_state_idxs:
+            s_being_reflected = states[list_idx] # This is the child state s that failed
+            
+            # The reflections for s_being_reflected should be its own existing reflections
+            # (which it would have inherited or started with) plus the new thought.
+            new_reflections = [gathered_thoughts[thought_idx]] + s_being_reflected.reflections
+            
+            states[list_idx] = replace(s_being_reflected, 
+                                       reflections=new_reflections[:k])
+            thought_idx += 1
+
+        return states
 
 # ---Helper functions---#
 def parse_proposal(response: List[str], step_n: int, existing_steps: str) -> str:

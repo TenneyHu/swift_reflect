@@ -508,104 +508,150 @@ class AgentReflectSummaryHumanEval(StateReturningAgent):
         request_id: str,
         params: DecodingParameters,
     ) -> List[StateHumanEval]:
-        
-        # 1. Act part (like AgentActHumanEval)
+        # 1. Generate actions, like AgentActHumanEval, but with summary in prompt
         language = "py" if "def" in state.puzzle else "rs"
         instruct = prompts.SIMPLE_CHAT_INSTRUCTION_V2.format(lang=language)
 
+        user_content = state.current_state
         if state.summary:
             print(f'using summary: {state.summary}')
-            if language == "py":
-                user_prompt = prompts.summary_act_prompt_py.format(
-                    summary=state.summary,
-                    puzzle=state.puzzle
-                )
-            else:
-                user_prompt = prompts.summary_act_prompt_rs.format(
-                    summary=state.summary,
-                    puzzle=state.puzzle
-                )
-            prompt = [
-                {"role": "user", "content": user_prompt}
-            ]
-        else:
-             prompt=[
-                {"role": "system", "content": instruct},
-                {"role": "user", "content": state.current_state},
-            ]
+            user_content = prompts.act_with_summary.format(
+                summary=state.summary,
+                current_state=state.current_state
+            )
 
         actions = await model.request(
-            prompt=prompt,
+            prompt=[
+                {"role": "system", "content": instruct},
+                {"role": "user", "content": user_content},
+            ],
             n=n,
             request_id=request_id,
             namespace=namespace,
             params=params,
         )
+        
+        states = [EnvironmentHumanEval.step(state, action.strip()) for action in actions]
 
-        actions = [r.strip() for r in actions]
-        
-        # 2. Create new states from actions
-        states = [EnvironmentHumanEval.step(state, action) for action in actions]
-        
-        # 3. Reflect and summarize on failed states
-        new_states = []
+        # 3. Reflect on terminal states
+        reflection_coroutines = []
+        reflection_indices = []
+        other_states = []
+
         for i, s in enumerate(states):
-            _solved, score = EnvironmentHumanEval.evaluate(s)
-            
+            _, score = EnvironmentHumanEval.evaluate(s)
             if score == 1.0:
-                # if a solution is found, we can just return it
+                # Early exit for winning state
                 return [s]
-            
-            # Failed state: reflect and summarize
-            reflection_text = await AgentReflectHumanEval.act(
-                model=model,
-                state=s,
-                n=1,
-                namespace=namespace,
-                request_id=f"{request_id}-reflect-{i}",
-                params=params,
-            )
-            
-            new_reflections = s.reflections + [reflection_text]
-            
-            summary_text = await AgentReflectSummaryHumanEval.summarize(
-                model=model,
-                reflections=new_reflections,
-                namespace=namespace,
-                request_id=f"{request_id}-summary-{i}",
-                params=params,
-            )
-            
-            final_state = replace(s, reflections=new_reflections, summary=summary_text)
-            new_states.append(final_state)
-            
-        return new_states
+        
+            if EnvironmentHumanEval.is_final(s):
+                reflection_indices.append(i)
+                reflection_coroutines.append(
+                    AgentReflectHumanEval.act(
+                        state=s, model=model, namespace=namespace, n=1,
+                        request_id=f"{request_id}-reflect-{i}", params=params,
+                    )
+                )
+            else:
+                other_states.append(s)
 
+        if not reflection_coroutines:
+            return states
+
+        new_reflections = await asyncio.gather(*reflection_coroutines)
+
+        summarization_coroutines = []
+        reflected_states_with_new_reflection = []
+
+        for i, reflection_text in enumerate(new_reflections):
+            original_state_index = reflection_indices[i]
+            s = states[original_state_index]
+            
+            # Add new reflection
+            current_reflections = s.reflections + [reflection_text]
+            s_with_reflection = replace(s, reflections=current_reflections)
+            reflected_states_with_new_reflection.append(s_with_reflection)
+
+            # Create summarization coroutine
+            reflections_str = "\n\n".join(current_reflections)
+            summary_prompt_text = prompts.summarize_reflections.format(
+                reflections=reflections_str
+            )
+            summarization_coroutines.append(
+                model.request(
+                    prompt=summary_prompt_text, n=1,
+                    request_id=f"{request_id}-summary-{i}",
+                    namespace=namespace, params=params,
+                )
+            )
+
+        summaries_list = await asyncio.gather(*summarization_coroutines)
+        
+        final_states = other_states
+        for i, summary_list in enumerate(summaries_list):
+            summary = summary_list[0].strip()
+            s = reflected_states_with_new_reflection[i]
+            s_with_summary = replace(s, summary=summary)
+            final_states.append(s_with_summary)
+
+        return final_states
+
+
+class AgentReflectPrevKHumanEval(StateReturningAgent):
     @staticmethod
-    async def summarize(
+    async def act(
         model: Model,
-        reflections: List[str],
+        state: StateHumanEval,
+        n: int,
         namespace: str,
+        k: int, # Number of reflections to keep
         request_id: str,
         params: DecodingParameters,
-    ) -> str:
-        if not reflections:
-            return ""
-
-        summarization_prompt_text = prompts.summarize_reflections_prompt.format(
-            reflections="\n\n---\n\n".join(reflections)
-        )
-
-        responses = await model.request(
-            prompt=summarization_prompt_text,
-            n=1,
-            request_id=request_id,
+    ) -> List[StateHumanEval]:
+        actions = await AgentReactHumanEval.act(
+            model=model,
+            state=state,
+            n=n,
             namespace=namespace,
+            request_id=request_id,
             params=params,
         )
 
-        return responses[0].strip()
+        states = [EnvironmentHumanEval.step(state, action) for action in actions]
 
+        reflection_coroutines = []
+        reflected_idxs = []
+        for i, s in enumerate(states):
+            # if any of the states won, just return that state
+            if EnvironmentHumanEval.evaluate(s)[1] == 1:
+                return [s]
+        
+            # If failed terminal state, create the thought
+            if EnvironmentHumanEval.is_final(s):
+                reflected_idxs.append(i)
+                reflection_coroutines.append(
+                    AgentReflectHumanEval.act(
+                        state=s,
+                        model=model,
+                        namespace=namespace,
+                        n=1,
+                        request_id=f"{request_id}-reflect-{i}",
+                        params=params,
+                    )
+                )
+        
+        if len(reflection_coroutines) == 0:
+            return states
+        
+        thoughts = await asyncio.gather(*reflection_coroutines)
+        
+        for i in reflected_idxs:
+            s_reflections = list(states[i].reflections)
+            s_reflections.insert(0, thoughts.pop(0))
+            states[i] = replace(states[i], reflections=s_reflections[:k])  # Only keep last k reflections
+
+        return states
+        
 
 
 
