@@ -56,12 +56,13 @@ class AlgorithmReflectSummary(Algorithm):
         handler.setLevel(logging.INFO)
         logger.addHandler(handler)
 
-        logger.info('#################################################################')
+        logger.info(50*'#')
         
     async def solve(self, idx: int, state: State, namespace: str, value_cache: dict = None):
         randomness = idx
         random.seed(randomness)
         state = state.clone(randomness=random.randint(0, MAX_SEED))
+        
 
         logger.info(f'reflect_summary_logs-{idx}-fleet: {log_agents([{"agent": self.step_agent, "params": self.step_params, "num_agents": 1}])}')
         
