@@ -5,9 +5,14 @@ from typing import Tuple
 
 from .state import StateSciBench
 from ...typedefs import Environment, MAX_SEED
+from ....typedefs import State
 
 class EnvironmentSciBench(Environment):
-    
+    name = 'scibench'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     @staticmethod
     def step(state: StateSciBench, action: str) -> StateSciBench:
         

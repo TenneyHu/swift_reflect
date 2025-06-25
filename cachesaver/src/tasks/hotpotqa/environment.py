@@ -3,6 +3,8 @@ import random
 import string
 from typing import Tuple
 from langchain.agents.react.base import DocstoreExplorer
+from langchain.docstore.base import Docstore
+from langchain.docstore.wikipedia import Wikipedia
 
 from .state import StateHotpotQA
 from ...typedefs import Environment, MAX_SEED
@@ -14,6 +16,12 @@ class EnvironmentHotpotQA(Environment):
     """
     Environment for the HotpotQA task.
     """
+
+    name = 'hotpotqa'
+
+    def __init__(self, docstore: Docstore = DocstoreExplorer(Wikipedia())):
+        super().__init__()
+        self.docstore = docstore
 
     @staticmethod
     def step(state: StateHotpotQA, action: str) -> StateHotpotQA:

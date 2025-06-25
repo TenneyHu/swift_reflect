@@ -4,8 +4,12 @@ from typing import Tuple
 
 from .state import StateLogiQA
 from ...typedefs import Environment, MAX_SEED
+from ....typedefs import State
 
 class EnvironmentLogiQA(Environment):
+    name = 'logiqa'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def step(state: StateLogiQA, action: str) -> StateLogiQA:

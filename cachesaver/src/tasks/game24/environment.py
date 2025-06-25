@@ -5,8 +5,13 @@ from sympy import simplify
 
 from .state import StateGame24
 from ...typedefs import Environment, MAX_SEED
+from ....typedefs import State
 
 class EnvironmentGame24(Environment):
+    name = 'game24'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def step(state: StateGame24, action: str) -> StateGame24:

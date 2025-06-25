@@ -1,11 +1,16 @@
 from typing import Tuple, List
 from dataclasses import dataclass
-from ...typedefs import Environment
+from ...typedefs import Environment, State
 from .state import StateMathArena
 
 @dataclass
 class EnvironmentMathArena(Environment):
     """Environment for MathArena task."""
+
+    name = 'matharena'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def evaluate(state: StateMathArena) -> Tuple[bool, float]:
@@ -105,3 +110,7 @@ class EnvironmentMathArena(Environment):
         new_state = state.copy()
         new_state.steps.append(action)
         return new_state
+
+    def step(self, state: State, action: str) -> State:
+        action = action.strip()
+        # ... existing code ...

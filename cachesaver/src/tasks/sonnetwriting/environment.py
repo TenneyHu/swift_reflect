@@ -11,6 +11,10 @@ import syllables
 import pronouncing
 
 class EnvironmentSonnetWriting(Environment):
+    name = 'sonnetwriting'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def step(state: StateSonnetWriting, action: str) -> StateSonnetWriting:

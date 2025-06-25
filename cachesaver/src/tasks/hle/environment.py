@@ -13,6 +13,11 @@ class EnvironmentHLE(Environment):
     Environment for the HLE (Human-Labeled Explanations) task.
     """
 
+    name = 'hle'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     @staticmethod
     def step(state: StateHLE, action: str) -> StateHLE:
         """
