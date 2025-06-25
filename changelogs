@@ -1,0 +1,21 @@
+This file contains the significant code changes to the cachesaver library that should be documented for the future
+
+1. Prompt changes in HotPotQA (Ansh)
+
+2. Created class "StateReturningAgent" to indicate whether an agent returns actions or states
+
+3. Created "wrap_class_in_env" method: this wraps the "Agent" classes in a "StateReturningAgent" using the current env
+
+4. Diff bw het_foa and foa: het_foa works with states, not actions. ie, het_foa expects all of its agents to be derived from class "StateReturningAgents". It expects that agent.act(...) -> List[GameState]. This is done so that agents can manipulate states (for example, creating thoughts or predetermining state values) based on their preference.
+
+5. Changes in game states (partially done, needs to be done for all games):
+    note to shoan: not done for game24 bcs need good prompts first. hotpotqa works perfectly.
+    another note: i should probably change this to "context" instead of reflection since idk what other kind of agents i'll make. we'll see then though.
+    
+    1. Added "reflections: List[str] = field(default_factory=list)" to store relections in each state
+    2. Added "value: float | None = None" to store values in states rather than buffers. This is done so that agents can access state values for more complex logical tasks.
+
+
+6. Added a check in AgentEvaluate to not call the LLM of state.value is not None and instead just return that value (partially done, needs to be done for all games)
+
+7. Did everything for HumanEval but there is an issue with HumanEval env. to be addressed the next meet.

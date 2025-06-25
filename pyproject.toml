@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cachesaver"
+version = "0.0.1"
+authors = [
+    { name = "Lars Klein", email = "lars.klein@epfl.ch" },
+]
+description = "A caching library built with LLM experiments in mind"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "deepdiff",
+    "diskcache",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "deepdiff",
+    "diskcache",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+testpaths = ["test"]
+pythonpath = ["src"]
+asyncio_mode = "strict"

@@ -1,0 +1,2365 @@
+{
+    "900": {
+        "puzzle": "4 5 6 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 - 4 = 1 (left: 1 6 10)"
+            },
+            "Step 1": {
+                "Step": "5 - 4 = 1 (left: 1 6 10) -> 6 / 1 = 6 (left: 6 10)"
+            },
+            "Step 2": {
+                "Step": "5 - 4 = 1 (left: 1 6 10) -> 6 / 1 = 6 (left: 6 10) -> 6 + 10 = 16 (left: 16)"
+            },
+            "Step 3": {
+                "Step": "5 - 4 = 1 (left: 1 6 10) -> 6 / 1 = 6 (left: 6 10) -> 6 + 10 = 16 (left: 16) -> 16 - 16 = 0 (left: 0)"
+            }
+        },
+        "Input": "4 5 6 10",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "901": {
+        "puzzle": "1 2 4 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 2 = 3 (left: 3 4 7)"
+            },
+            "Step 1": {
+                "Step": "1 + 2 = 3 (left: 3 4 7) -> 4 / 3 = 1.33 (left: 1.33 7)"
+            },
+            "Step 2": {
+                "Step": "1 + 2 = 3 (left: 3 4 7) -> 4 / 3 = 1.33 (left: 1.33 7) -> 1.33 * 7 = 9.31 (left: 9.31)"
+            },
+            "Step 3": {
+                "Step": "1 + 2 = 3 (left: 3 4 7) -> 4 / 3 = 1.33 (left: 1.33 7) -> 1.33 * 7 = 9.31 (left: 9.31) -> Since the input only contains one number, there are no possible next steps."
+            }
+        },
+        "Input": "1 2 4 7",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "902": {
+        "puzzle": "2 5 8 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 5 = 10 (left: 8 10 11)"
+            },
+            "Step 1": {
+                "Step": "2 * 5 = 10 (left: 8 10 11) -> 10 - 8 = 2 (left: 2 11)"
+            },
+            "Step 2": {
+                "Step": "2 * 5 = 10 (left: 8 10 11) -> 10 - 8 = 2 (left: 2 11) -> 11 * 2 = 22 (left: 22)"
+            },
+            "Step 3": {
+                "Step": "2 * 5 = 10 (left: 8 10 11) -> 10 - 8 = 2 (left: 2 11) -> 11 * 2 = 22 (left: 22) -> Since there is only one number, there are no possible next steps."
+            }
+        },
+        "Input": "2 5 8 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "903": {
+        "puzzle": "3 4 4 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "13 + 4 = 17 (left: 3 4 17)"
+            },
+            "Step 1": {
+                "Step": "13 + 4 = 17 (left: 3 4 17) -> 3 - 4 = -1 (left: -1 17)"
+            },
+            "Step 2": {
+                "Step": "13 + 4 = 17 (left: 3 4 17) -> 3 - 4 = -1 (left: -1 17) -> -1 + 17 = 16 (left: 16)"
+            },
+            "Step 3": {
+                "Step": "13 + 4 = 17 (left: 3 4 17) -> 3 - 4 = -1 (left: -1 17) -> -1 + 17 = 16 (left: 16) -> Since there is only one number left, there are no possible next steps."
+            }
+        },
+        "Input": "3 4 4 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "904": {
+        "puzzle": "6 7 8 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 + 8 = 14 (left: 7 9 14)"
+            },
+            "Step 1": {
+                "Step": "6 + 8 = 14 (left: 7 9 14) -> 14 + 7 = 21 (left: 9 21)"
+            },
+            "Step 2": {
+                "Step": "6 + 8 = 14 (left: 7 9 14) -> 14 + 7 = 21 (left: 9 21) -> 9 + 21 = 30 (left: 30)"
+            },
+            "Step 3": {
+                "Step": "6 + 8 = 14 (left: 7 9 14) -> 14 + 7 = 21 (left: 9 21) -> 9 + 21 = 30 (left: 30) -> Since there is only one number, there are no possible next steps with two numbers."
+            }
+        },
+        "Input": "6 7 8 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "905": {
+        "puzzle": "1 11 11 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "11 * 1 = 11 (left: 11 11 13)"
+            },
+            "Step 1": {
+                "Step": "11 * 1 = 11 (left: 11 11 13) -> 13 + 11 = 24 (left: 11 24)"
+            },
+            "Step 2": {
+                "Step": "11 * 1 = 11 (left: 11 11 13) -> 13 + 11 = 24 (left: 11 24) -> 11 * 24 = 264 (left: 24 264)"
+            },
+            "Step 3": {
+                "Step": "11 * 1 = 11 (left: 11 11 13) -> 13 + 11 = 24 (left: 11 24) -> 11 * 24 = 264 (left: 24 264) -> 264 - 24 = 240 (left: 240)"
+            }
+        },
+        "Input": "1 11 11 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "906": {
+        "puzzle": "1 8 10 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 8 = 9 (left: 9 10 11)"
+            },
+            "Step 1": {
+                "Step": "1 + 8 = 9 (left: 9 10 11) -> 9 + 10 = 19 (left: 11 19)"
+            },
+            "Step 2": {
+                "Step": "1 + 8 = 9 (left: 9 10 11) -> 9 + 10 = 19 (left: 11 19) -> 11 / 19 = 0.579 (left: 0.579)"
+            },
+            "Step 3": {
+                "Step": "1 + 8 = 9 (left: 9 10 11) -> 9 + 10 = 19 (left: 11 19) -> 11 / 19 = 0.579 (left: 0.579) -> I think there may be a misunderstanding here. The input is a single number, 0.579, but the problem statement implies that there should be multiple numbers to choose from."
+            }
+        },
+        "Input": "1 8 10 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "907": {
+        "puzzle": "2 3 6 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 + 3 = 5 (left: 5 6 9)"
+            },
+            "Step 1": {
+                "Step": "2 + 3 = 5 (left: 5 6 9) -> 6 - 5 = 1 (left: 1 9)"
+            },
+            "Step 2": {
+                "Step": "2 + 3 = 5 (left: 5 6 9) -> 6 - 5 = 1 (left: 1 9) -> 9 - 1 = 8 (left: 8)"
+            },
+            "Step 3": {
+                "Step": "2 + 3 = 5 (left: 5 6 9) -> 6 - 5 = 1 (left: 1 9) -> 9 - 1 = 8 (left: 8) -> No possible next steps"
+            }
+        },
+        "Input": "2 3 6 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "908": {
+        "puzzle": "1 3 5 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "9 + 1 = 10 (left: 3 5 10)"
+            },
+            "Step 1": {
+                "Step": "9 + 1 = 10 (left: 3 5 10) -> 5 / 3 = 1.67 (left: 1.67 10)"
+            },
+            "Step 2": {
+                "Step": "9 + 1 = 10 (left: 3 5 10) -> 5 / 3 = 1.67 (left: 1.67 10) -> 1.67 + 10 = 11.67 (left: 11.67)"
+            },
+            "Step 3": {
+                "Step": "9 + 1 = 10 (left: 3 5 10) -> 5 / 3 = 1.67 (left: 1.67 10) -> 1.67 + 10 = 11.67 (left: 11.67) -> There is only one number, no possible next steps."
+            }
+        },
+        "Input": "1 3 5 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "909": {
+        "puzzle": "3 3 7 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 + 3 = 10 (left: 3 10 12)"
+            },
+            "Step 1": {
+                "Step": "7 + 3 = 10 (left: 3 10 12) -> 12 / 3 = 4 (left: 4 10)"
+            },
+            "Step 2": {
+                "Step": "7 + 3 = 10 (left: 3 10 12) -> 12 / 3 = 4 (left: 4 10) -> 4 + 10 = 14 (left: 14)"
+            },
+            "Step 3": {
+                "Step": "7 + 3 = 10 (left: 3 10 12) -> 12 / 3 = 4 (left: 4 10) -> 4 + 10 = 14 (left: 14) -> No possible next steps"
+            }
+        },
+        "Input": "3 3 7 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "910": {
+        "puzzle": "4 5 7 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 - 5 = -1 (left: -1 7 9)"
+            },
+            "Step 1": {
+                "Step": "4 - 5 = -1 (left: -1 7 9) -> -1 - 7 = -8 (left: -8 9)"
+            },
+            "Step 2": {
+                "Step": "4 - 5 = -1 (left: -1 7 9) -> -1 - 7 = -8 (left: -8 9) -> 9 / (-8) = -1.125 (left: -1.125)"
+            },
+            "Step 3": {
+                "Step": "4 - 5 = -1 (left: -1 7 9) -> -1 - 7 = -8 (left: -8 9) -> 9 / (-8) = -1.125 (left: -1.125) -> There is only one number left, so there are no possible next steps."
+            }
+        },
+        "Input": "4 5 7 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "911": {
+        "puzzle": "1 2 8 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 2 = 3 (left: 3 8 13)"
+            },
+            "Step 1": {
+                "Step": "1 + 2 = 3 (left: 3 8 13) -> 3 * 8 = 24 (left: 13 24)"
+            },
+            "Step 2": {
+                "Step": "1 + 2 = 3 (left: 3 8 13) -> 3 * 8 = 24 (left: 13 24) -> 13 - 24 = -11 (left: -11)"
+            },
+            "Step 3": {
+                "Step": "1 + 2 = 3 (left: 3 8 13) -> 3 * 8 = 24 (left: 13 24) -> 13 - 24 = -11 (left: -11) -> No possible next steps"
+            }
+        },
+        "Input": "1 2 8 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "912": {
+        "puzzle": "4 6 6 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 + 6 = 10 (left: 6 9 10)"
+            },
+            "Step 1": {
+                "Step": "4 + 6 = 10 (left: 6 9 10) -> 9 + 10 = 19 (left: 6 19)"
+            },
+            "Step 2": {
+                "Step": "4 + 6 = 10 (left: 6 9 10) -> 9 + 10 = 19 (left: 6 19) -> 6 * 19 = 114 (left: 114)"
+            },
+            "Step 3": {
+                "Step": "4 + 6 = 10 (left: 6 9 10) -> 9 + 10 = 19 (left: 6 19) -> 6 * 19 = 114 (left: 114) -> 114 / 11 = 10.36 (left: 10.36 4)"
+            }
+        },
+        "Input": "4 6 6 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "913": {
+        "puzzle": "1 4 4 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 4 = 5 (left: 4 4 5 8)"
+            },
+            "Step 1": {
+                "Step": "1 + 4 = 5 (left: 4 4 5 8) -> 5 + 4 = 9 (left: 4 8 9)"
+            },
+            "Step 2": {
+                "Step": "1 + 4 = 5 (left: 4 4 5 8) -> 5 + 4 = 9 (left: 4 8 9) -> 4 * 8 = 32 (left: 9 32)"
+            },
+            "Step 3": {
+                "Step": "1 + 4 = 5 (left: 4 4 5 8) -> 5 + 4 = 9 (left: 4 8 9) -> 4 * 8 = 32 (left: 9 32) -> 9 + 32 = 41 (left: 41)"
+            }
+        },
+        "Input": "1 4 4 8",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "914": {
+        "puzzle": "1 5 10 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 * 5 = 5 (left: 5 10 11)"
+            },
+            "Step 1": {
+                "Step": "1 * 5 = 5 (left: 5 10 11) -> 10 - 5 = 5 (left: 5 11)"
+            },
+            "Step 2": {
+                "Step": "1 * 5 = 5 (left: 5 10 11) -> 10 - 5 = 5 (left: 5 11) -> 11 + 5 = 16 (left: 16)"
+            },
+            "Step 3": {
+                "Step": "1 * 5 = 5 (left: 5 10 11) -> 10 - 5 = 5 (left: 5 11) -> 11 + 5 = 16 (left: 16) -> 16 / 16 = 1 (left: 1)"
+            }
+        },
+        "Input": "1 5 10 11",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "915": {
+        "puzzle": "3 4 6 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 11 = 14 (left: 14 4 6)"
+            },
+            "Step 1": {
+                "Step": "3 + 11 = 14 (left: 14 4 6) -> 4 + 6 = 10 (left: 10 14)"
+            },
+            "Step 2": {
+                "Step": "3 + 11 = 14 (left: 14 4 6) -> 4 + 6 = 10 (left: 10 14) -> 10 + 14 = 24 (left: 24)"
+            },
+            "Step 3": {
+                "Step": "3 + 11 = 14 (left: 14 4 6) -> 4 + 6 = 10 (left: 10 14) -> 10 + 14 = 24 (left: 24) -> (3 + 11) + (4 + 6) = 24"
+            }
+        },
+        "Input": "3 4 6 11",
+        "Verifications": [
+            {
+                "r": 1
+            }
+        ]
+    },
+    "916": {
+        "puzzle": "2 4 8 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 - 4 = -2 (left: -2 8 9)"
+            },
+            "Step 1": {
+                "Step": "2 - 4 = -2 (left: -2 8 9) -> -2 + 8 = 6 (left: 6 9)"
+            },
+            "Step 2": {
+                "Step": "2 - 4 = -2 (left: -2 8 9) -> -2 + 8 = 6 (left: 6 9) -> 9 * 6 = 54 (left: 54)"
+            },
+            "Step 3": {
+                "Step": "2 - 4 = -2 (left: -2 8 9) -> -2 + 8 = 6 (left: 6 9) -> 9 * 6 = 54 (left: 54) -> 54 / 54 = 1 (left: 1)"
+            }
+        },
+        "Input": "2 4 8 9",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "917": {
+        "puzzle": "1 4 5 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 13 = 14 (left: 4 5 14)"
+            },
+            "Step 1": {
+                "Step": "1 + 13 = 14 (left: 4 5 14) -> 14 + 5 = 19 (left: 4 19)"
+            },
+            "Step 2": {
+                "Step": "1 + 13 = 14 (left: 4 5 14) -> 14 + 5 = 19 (left: 4 19) -> 19 / 4 = 4.75 (left: 4.75)"
+            },
+            "Step 3": {
+                "Step": "1 + 13 = 14 (left: 4 5 14) -> 14 + 5 = 19 (left: 4 19) -> 19 / 4 = 4.75 (left: 4.75) -> No numbers to operate on."
+            }
+        },
+        "Input": "1 4 5 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "918": {
+        "puzzle": "2 2 7 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 - 2 = 0 (left: 0 7 12)"
+            },
+            "Step 1": {
+                "Step": "2 - 2 = 0 (left: 0 7 12) -> 7 - 0 = 7 (left: 7 12)"
+            },
+            "Step 2": {
+                "Step": "2 - 2 = 0 (left: 0 7 12) -> 7 - 0 = 7 (left: 7 12) -> 7 * 12 = 84 (left: 84)"
+            },
+            "Step 3": {
+                "Step": "2 - 2 = 0 (left: 0 7 12) -> 7 - 0 = 7 (left: 7 12) -> 7 * 12 = 84 (left: 84) -> 8 + 4 = 12 (left: 12 84 is not possible, 84 is not a remaining number)"
+            }
+        },
+        "Input": "2 2 7 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "919": {
+        "puzzle": "3 3 6 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 + 3 = 10 (left: 3 6 10)"
+            },
+            "Step 1": {
+                "Step": "7 + 3 = 10 (left: 3 6 10) -> 3 + 6 = 9 (left: 9 10)"
+            },
+            "Step 2": {
+                "Step": "7 + 3 = 10 (left: 3 6 10) -> 3 + 6 = 9 (left: 9 10) -> 9 * 10 = 90 (left: 90)"
+            },
+            "Step 3": {
+                "Step": "7 + 3 = 10 (left: 3 6 10) -> 3 + 6 = 9 (left: 9 10) -> 9 * 10 = 90 (left: 90) -> 90 + 90 = 180 (left: 180)"
+            }
+        },
+        "Input": "3 3 6 7",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "920": {
+        "puzzle": "1 5 9 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 + 13 = 18 (left: 1 9 18)"
+            },
+            "Step 1": {
+                "Step": "5 + 13 = 18 (left: 1 9 18) -> 1 + 18 = 19 (left: 9 19)"
+            },
+            "Step 2": {
+                "Step": "5 + 13 = 18 (left: 1 9 18) -> 1 + 18 = 19 (left: 9 19) -> 19 - 9 = 10 (left: 10)"
+            },
+            "Step 3": {
+                "Step": "5 + 13 = 18 (left: 1 9 18) -> 1 + 18 = 19 (left: 9 19) -> 19 - 9 = 10 (left: 10) -> 10 * 10 = 100 (left: 100)"
+            }
+        },
+        "Input": "1 5 9 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "921": {
+        "puzzle": "5 6 7 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 5 = 1 (left: 1 7 13)"
+            },
+            "Step 1": {
+                "Step": "6 - 5 = 1 (left: 1 7 13) -> 13 - 1 = 12 (left: 7 12)"
+            },
+            "Step 2": {
+                "Step": "6 - 5 = 1 (left: 1 7 13) -> 13 - 1 = 12 (left: 7 12) -> 12 / 7 = 12/7 (left: 12/7)"
+            },
+            "Step 3": {
+                "Step": "6 - 5 = 1 (left: 1 7 13) -> 13 - 1 = 12 (left: 7 12) -> 12 / 7 = 12/7 (left: 12/7) -> However, if you meant to provide the numbers 12 and 7, then here are the possible next steps:"
+            }
+        },
+        "Input": "5 6 7 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "922": {
+        "puzzle": "5 5 8 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "10 - 8 = 2 (left: 2 5 5)"
+            },
+            "Step 1": {
+                "Step": "10 - 8 = 2 (left: 2 5 5) -> 5 + 5 = 10 (left: 2 10)"
+            },
+            "Step 2": {
+                "Step": "10 - 8 = 2 (left: 2 5 5) -> 5 + 5 = 10 (left: 2 10) -> 10 / 2 = 5 (left: 5)"
+            },
+            "Step 3": {
+                "Step": "10 - 8 = 2 (left: 2 5 5) -> 5 + 5 = 10 (left: 2 10) -> 10 / 2 = 5 (left: 5) -> Since there is only one number left, there are no possible next steps."
+            }
+        },
+        "Input": "5 5 8 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "923": {
+        "puzzle": "2 4 6 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 + 2 = 6 (left: 6 6 12)"
+            },
+            "Step 1": {
+                "Step": "4 + 2 = 6 (left: 6 6 12) -> 12 - 6 = 6 (left: 6 6)"
+            },
+            "Step 2": {
+                "Step": "4 + 2 = 6 (left: 6 6 12) -> 12 - 6 = 6 (left: 6 6) -> 6 / 6 = 1 (left: 1)"
+            },
+            "Step 3": {
+                "Step": "4 + 2 = 6 (left: 6 6 12) -> 12 - 6 = 6 (left: 6 6) -> 6 / 6 = 1 (left: 1) -> 1 * 1 = 1 (left: 1)"
+            }
+        },
+        "Input": "2 4 6 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "924": {
+        "puzzle": "6 7 8 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 7 = -1 (left: 8 11 -1)"
+            },
+            "Step 1": {
+                "Step": "6 - 7 = -1 (left: 8 11 -1) -> 8 / 11 = 0.727 (left: -1 0.727)"
+            },
+            "Step 2": {
+                "Step": "6 - 7 = -1 (left: 8 11 -1) -> 8 / 11 = 0.727 (left: -1 0.727) -> -1 + 0.727 = -0.273 (left: -0.273)"
+            },
+            "Step 3": {
+                "Step": "6 - 7 = -1 (left: 8 11 -1) -> 8 / 11 = 0.727 (left: -1 0.727) -> -1 + 0.727 = -0.273 (left: -0.273) -> There are no two numbers to choose from, as there is only one number -0.273."
+            }
+        },
+        "Input": "6 7 8 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "925": {
+        "puzzle": "7 9 9 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 - 9 = -2 (left: 9 9 13 -2)"
+            },
+            "Step 1": {
+                "Step": "7 - 9 = -2 (left: 9 9 13 -2) -> 13 + 9 = 22 (left: 9 -2 22)"
+            },
+            "Step 2": {
+                "Step": "7 - 9 = -2 (left: 9 9 13 -2) -> 13 + 9 = 22 (left: 9 -2 22) -> -2 + 9 = 7 (left: 7 22)"
+            },
+            "Step 3": {
+                "Step": "7 - 9 = -2 (left: 9 9 13 -2) -> 13 + 9 = 22 (left: 9 -2 22) -> -2 + 9 = 7 (left: 7 22) -> 7 / 22 = 0.32 (left: 0.32)"
+            }
+        },
+        "Input": "7 9 9 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "926": {
+        "puzzle": "3 6 9 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 * 3 = 18 (left: 9 12 18)"
+            },
+            "Step 1": {
+                "Step": "6 * 3 = 18 (left: 9 12 18) -> 9 + 12 = 21 (left: 18 21)"
+            },
+            "Step 2": {
+                "Step": "6 * 3 = 18 (left: 9 12 18) -> 9 + 12 = 21 (left: 18 21) -> 21 / 18 = 1.1666666666666667 (left: 1.1666666666666667)"
+            },
+            "Step 3": {
+                "Step": "6 * 3 = 18 (left: 9 12 18) -> 9 + 12 = 21 (left: 18 21) -> 21 / 18 = 1.1666666666666667 (left: 1.1666666666666667) -> It seems like you forgot to provide the input numbers. Please provide the numbers, and I'll be happy to help you with the possible next steps."
+            }
+        },
+        "Input": "3 6 9 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "927": {
+        "puzzle": "6 9 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "12 - 9 = 3 (left: 3 6 13)"
+            },
+            "Step 1": {
+                "Step": "12 - 9 = 3 (left: 3 6 13) -> 6 * 13 = 78 (left: 3 78)"
+            },
+            "Step 2": {
+                "Step": "12 - 9 = 3 (left: 3 6 13) -> 6 * 13 = 78 (left: 3 78) -> 78 / 3 = 26 (left: 26)"
+            },
+            "Step 3": {
+                "Step": "12 - 9 = 3 (left: 3 6 13) -> 6 * 13 = 78 (left: 3 78) -> 78 / 3 = 26 (left: 26) -> "
+            }
+        },
+        "Input": "6 9 12 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "928": {
+        "puzzle": "4 7 9 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 * 7 = 28 (left: 9 13 28)"
+            },
+            "Step 1": {
+                "Step": "4 * 7 = 28 (left: 9 13 28) -> 28 - 9 = 19 (left: 19 13)"
+            },
+            "Step 2": {
+                "Step": "4 * 7 = 28 (left: 9 13 28) -> 28 - 9 = 19 (left: 19 13) -> 13 + 19 = 32 (left: 32)"
+            },
+            "Step 3": {
+                "Step": "4 * 7 = 28 (left: 9 13 28) -> 28 - 9 = 19 (left: 19 13) -> 13 + 19 = 32 (left: 32) -> 32 - 32 = 0 (left: 0)"
+            }
+        },
+        "Input": "4 7 9 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "929": {
+        "puzzle": "5 6 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 5 = 1 (left: 1 8 12)"
+            },
+            "Step 1": {
+                "Step": "6 - 5 = 1 (left: 1 8 12) -> 1 + 8 = 9 (left: 9 12)"
+            },
+            "Step 2": {
+                "Step": "6 - 5 = 1 (left: 1 8 12) -> 1 + 8 = 9 (left: 9 12) -> 9 - 12 = -3 (left: -3)"
+            },
+            "Step 3": {
+                "Step": "6 - 5 = 1 (left: 1 8 12) -> 1 + 8 = 9 (left: 9 12) -> 9 - 12 = -3 (left: -3) -> No possible next steps."
+            }
+        },
+        "Input": "5 6 8 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "930": {
+        "puzzle": "2 4 6 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 + 4 = 6 (left: 6 6 7)"
+            },
+            "Step 1": {
+                "Step": "2 + 4 = 6 (left: 6 6 7) -> 6 + 6 = 12 (left: 7 12)"
+            },
+            "Step 2": {
+                "Step": "2 + 4 = 6 (left: 6 6 7) -> 6 + 6 = 12 (left: 7 12) -> 7 - 12 = -5 (left: -5)"
+            },
+            "Step 3": {
+                "Step": "2 + 4 = 6 (left: 6 6 7) -> 6 + 6 = 12 (left: 7 12) -> 7 - 12 = -5 (left: -5) -> Since there's only one number, there are no possible next steps."
+            }
+        },
+        "Input": "2 4 6 7",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "931": {
+        "puzzle": "2 5 10 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 5 = 10 (left: 10 10 10)"
+            },
+            "Step 1": {
+                "Step": "2 * 5 = 10 (left: 10 10 10) -> 10 / 10 = 1 (left: 1 10)"
+            },
+            "Step 2": {
+                "Step": "2 * 5 = 10 (left: 10 10 10) -> 10 / 10 = 1 (left: 1 10) -> 10 / 1 = 10 (left: 10)"
+            },
+            "Step 3": {
+                "Step": "2 * 5 = 10 (left: 10 10 10) -> 10 / 10 = 1 (left: 1 10) -> 10 / 1 = 10 (left: 10) -> There are no possible next steps since there is only one number left."
+            }
+        },
+        "Input": "2 5 10 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "932": {
+        "puzzle": "6 6 7 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 - 6 = 1 (left: 1 6 12)"
+            },
+            "Step 1": {
+                "Step": "7 - 6 = 1 (left: 1 6 12) -> 12 - 6 = 6 (left: 1 6)"
+            },
+            "Step 2": {
+                "Step": "7 - 6 = 1 (left: 1 6 12) -> 12 - 6 = 6 (left: 1 6) -> 1 + 6 = 7 (left: 7)"
+            },
+            "Step 3": {
+                "Step": "7 - 6 = 1 (left: 1 6 12) -> 12 - 6 = 6 (left: 1 6) -> 1 + 6 = 7 (left: 7) -> No possible next steps"
+            }
+        },
+        "Input": "6 6 7 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "933": {
+        "puzzle": "6 9 9 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 + 9 = 15 (left: 9 11 15)"
+            },
+            "Step 1": {
+                "Step": "6 + 9 = 15 (left: 9 11 15) -> 9 * 11 = 99 (left: 15 99)"
+            },
+            "Step 2": {
+                "Step": "6 + 9 = 15 (left: 9 11 15) -> 9 * 11 = 99 (left: 15 99) -> 15 + 99 = 114 (left: 114)"
+            },
+            "Step 3": {
+                "Step": "6 + 9 = 15 (left: 9 11 15) -> 9 * 11 = 99 (left: 15 99) -> 15 + 99 = 114 (left: 114) -> 1 * 114 = 114 (left: 114)"
+            }
+        },
+        "Input": "6 9 9 11",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "934": {
+        "puzzle": "5 8 11 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "8 / 5 = 1.6 (left: 11 12 1.6)"
+            },
+            "Step 1": {
+                "Step": "8 / 5 = 1.6 (left: 11 12 1.6) -> 11 * 12 = 132 (left: 1.6 132)"
+            },
+            "Step 2": {
+                "Step": "8 / 5 = 1.6 (left: 11 12 1.6) -> 11 * 12 = 132 (left: 1.6 132) -> 132 - 1.6 = 130.4 (left: 130.4)"
+            },
+            "Step 3": {
+                "Step": "8 / 5 = 1.6 (left: 11 12 1.6) -> 11 * 12 = 132 (left: 1.6 132) -> 132 - 1.6 = 130.4 (left: 130.4) -> No possible next steps, only one number left."
+            }
+        },
+        "Input": "5 8 11 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "935": {
+        "puzzle": "5 6 8 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "10 + 5 = 15 (left: 6 8 15)"
+            },
+            "Step 1": {
+                "Step": "10 + 5 = 15 (left: 6 8 15) -> 6 + 8 = 14 (left: 14 15)"
+            },
+            "Step 2": {
+                "Step": "10 + 5 = 15 (left: 6 8 15) -> 6 + 8 = 14 (left: 14 15) -> 14 - 15 = -1 (left: -1)"
+            },
+            "Step 3": {
+                "Step": "10 + 5 = 15 (left: 6 8 15) -> 6 + 8 = 14 (left: 14 15) -> 14 - 15 = -1 (left: -1) -> There are no possible next steps because there is only one number."
+            }
+        },
+        "Input": "5 6 8 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "936": {
+        "puzzle": "6 11 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 + 13 = 19 (left: 11 12 19)"
+            },
+            "Step 1": {
+                "Step": "6 + 13 = 19 (left: 11 12 19) -> 19 - 11 = 8 (left: 8 12)"
+            },
+            "Step 2": {
+                "Step": "6 + 13 = 19 (left: 11 12 19) -> 19 - 11 = 8 (left: 8 12) -> 12 / 8 = 1.5 (left: 1.5)"
+            },
+            "Step 3": {
+                "Step": "6 + 13 = 19 (left: 11 12 19) -> 19 - 11 = 8 (left: 8 12) -> 12 / 8 = 1.5 (left: 1.5) -> Since there's only one number, there are no possible next steps."
+            }
+        },
+        "Input": "6 11 12 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "937": {
+        "puzzle": "2 2 8 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 2 = 4 (left: 4 8 8)"
+            },
+            "Step 1": {
+                "Step": "2 * 2 = 4 (left: 4 8 8) -> 4 + 8 = 12 (left: 8 12)"
+            },
+            "Step 2": {
+                "Step": "2 * 2 = 4 (left: 4 8 8) -> 4 + 8 = 12 (left: 8 12) -> 8 + 12 = 20 (left: 20)"
+            },
+            "Step 3": {
+                "Step": "2 * 2 = 4 (left: 4 8 8) -> 4 + 8 = 12 (left: 8 12) -> 8 + 12 = 20 (left: 20) -> No possible next steps."
+            }
+        },
+        "Input": "2 2 8 8",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "938": {
+        "puzzle": "2 7 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "13 + 2 = 15 (left: 7 12 15)"
+            },
+            "Step 1": {
+                "Step": "13 + 2 = 15 (left: 7 12 15) -> 12 / 7 = 1.71 (left: 15 1.71)"
+            },
+            "Step 2": {
+                "Step": "13 + 2 = 15 (left: 7 12 15) -> 12 / 7 = 1.71 (left: 15 1.71) -> 15 * 1.71 = 25.65 (left: 25.65)"
+            },
+            "Step 3": {
+                "Step": "13 + 2 = 15 (left: 7 12 15) -> 12 / 7 = 1.71 (left: 15 1.71) -> 15 * 1.71 = 25.65 (left: 25.65) -> 25 - 0.65 = 24.35 (left: 24.35)"
+            }
+        },
+        "Input": "2 7 12 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "939": {
+        "puzzle": "2 6 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 6 = 12 (left: 8 12 12)"
+            },
+            "Step 1": {
+                "Step": "2 * 6 = 12 (left: 8 12 12) -> 8 + 12 = 20 (left: 12 20)"
+            },
+            "Step 2": {
+                "Step": "2 * 6 = 12 (left: 8 12 12) -> 8 + 12 = 20 (left: 12 20) -> 12 + 20 = 32 (left: 32)"
+            },
+            "Step 3": {
+                "Step": "2 * 6 = 12 (left: 8 12 12) -> 8 + 12 = 20 (left: 12 20) -> 12 + 20 = 32 (left: 32) -> 32 + 32 = 64 (left: 64)"
+            }
+        },
+        "Input": "2 6 8 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "940": {
+        "puzzle": "3 4 9 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 13 = 16 (left: 4 9 16)"
+            },
+            "Step 1": {
+                "Step": "3 + 13 = 16 (left: 4 9 16) -> 9 - 4 = 5 (left: 5 16)"
+            },
+            "Step 2": {
+                "Step": "3 + 13 = 16 (left: 4 9 16) -> 9 - 4 = 5 (left: 5 16) -> 5 * 16 = 80 (left: 80)"
+            },
+            "Step 3": {
+                "Step": "3 + 13 = 16 (left: 4 9 16) -> 9 - 4 = 5 (left: 5 16) -> 5 * 16 = 80 (left: 80) -> Since there is only one number, there are no possible next steps."
+            }
+        },
+        "Input": "3 4 9 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "941": {
+        "puzzle": "4 5 10 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 + 5 = 9 (left: 9 10 12)"
+            },
+            "Step 1": {
+                "Step": "4 + 5 = 9 (left: 9 10 12) -> 9 + 10 = 19 (left: 12 19)"
+            },
+            "Step 2": {
+                "Step": "4 + 5 = 9 (left: 9 10 12) -> 9 + 10 = 19 (left: 12 19) -> 19 + 12 = 31 (left: 31)"
+            },
+            "Step 3": {
+                "Step": "4 + 5 = 9 (left: 9 10 12) -> 9 + 10 = 19 (left: 12 19) -> 19 + 12 = 31 (left: 31) -> 31 * 1 = 31 (left: 31)"
+            }
+        },
+        "Input": "4 5 10 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "942": {
+        "puzzle": "1 2 7 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 2 = 3 (left: 3 7 11)"
+            },
+            "Step 1": {
+                "Step": "1 + 2 = 3 (left: 3 7 11) -> 3 + 7 = 10 (left: 10 11)"
+            },
+            "Step 2": {
+                "Step": "1 + 2 = 3 (left: 3 7 11) -> 3 + 7 = 10 (left: 10 11) -> 10 - 11 = -1 (left: -1)"
+            },
+            "Step 3": {
+                "Step": "1 + 2 = 3 (left: 3 7 11) -> 3 + 7 = 10 (left: 10 11) -> 10 - 11 = -1 (left: -1) -> -1 * (-1) = 1 (left: 1)"
+            }
+        },
+        "Input": "1 2 7 11",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "943": {
+        "puzzle": "4 5 6 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 + 6 = 10 (left: 5 8 10)"
+            },
+            "Step 1": {
+                "Step": "4 + 6 = 10 (left: 5 8 10) -> 5 - 8 = -3 (left: 10 -3)"
+            },
+            "Step 2": {
+                "Step": "4 + 6 = 10 (left: 5 8 10) -> 5 - 8 = -3 (left: 10 -3) -> 10 / -3 = -3.33 (left: -3.33)"
+            },
+            "Step 3": {
+                "Step": "4 + 6 = 10 (left: 5 8 10) -> 5 - 8 = -3 (left: 10 -3) -> 10 / -3 = -3.33 (left: -3.33) -> "
+            }
+        },
+        "Input": "4 5 6 8",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "944": {
+        "puzzle": "6 10 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "12 + 6 = 18 (left: 10 13 18)"
+            },
+            "Step 1": {
+                "Step": "12 + 6 = 18 (left: 10 13 18) -> 13 + 18 = 31 (left: 10 31)"
+            },
+            "Step 2": {
+                "Step": "12 + 6 = 18 (left: 10 13 18) -> 13 + 18 = 31 (left: 10 31) -> 31 - 10 = 21 (left: 21)"
+            },
+            "Step 3": {
+                "Step": "12 + 6 = 18 (left: 10 13 18) -> 13 + 18 = 31 (left: 10 31) -> 31 - 10 = 21 (left: 21) -> There are no possible steps since there is only one number"
+            }
+        },
+        "Input": "6 10 12 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "945": {
+        "puzzle": "1 3 9 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 3 = 4 (left: 4 9 9)"
+            },
+            "Step 1": {
+                "Step": "1 + 3 = 4 (left: 4 9 9) -> 4 * 9 = 36 (left: 9 36)"
+            },
+            "Step 2": {
+                "Step": "1 + 3 = 4 (left: 4 9 9) -> 4 * 9 = 36 (left: 9 36) -> 36 / 9 = 4 (left: 4)"
+            },
+            "Step 3": {
+                "Step": "1 + 3 = 4 (left: 4 9 9) -> 4 * 9 = 36 (left: 9 36) -> 36 / 9 = 4 (left: 4) -> This case is not possible as there are no other numbers to choose from to obtain a new number."
+            }
+        },
+        "Input": "1 3 9 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "946": {
+        "puzzle": "1 4 4 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 - 4 = -3 (left: 4 4 11 -3)"
+            },
+            "Step 1": {
+                "Step": "1 - 4 = -3 (left: 4 4 11 -3) -> 11 - 4 = 7 (left: 4 7 -3)"
+            },
+            "Step 2": {
+                "Step": "1 - 4 = -3 (left: 4 4 11 -3) -> 11 - 4 = 7 (left: 4 7 -3) -> 7 + -3 = 4 (left: 4 4)"
+            },
+            "Step 3": {
+                "Step": "1 - 4 = -3 (left: 4 4 11 -3) -> 11 - 4 = 7 (left: 4 7 -3) -> 7 + -3 = 4 (left: 4 4) -> 4 - 4 = 0 (left: 0)"
+            }
+        },
+        "Input": "1 4 4 11",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "947": {
+        "puzzle": "2 3 9 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 3 = 6 (left: 6 9 10)"
+            },
+            "Step 1": {
+                "Step": "2 * 3 = 6 (left: 6 9 10) -> 9 - 6 = 3 (left: 3 10)"
+            },
+            "Step 2": {
+                "Step": "2 * 3 = 6 (left: 6 9 10) -> 9 - 6 = 3 (left: 3 10) -> 3 - 10 = -7 (left: -7)"
+            },
+            "Step 3": {
+                "Step": "2 * 3 = 6 (left: 6 9 10) -> 9 - 6 = 3 (left: 3 10) -> 3 - 10 = -7 (left: -7) -> No possible next steps"
+            }
+        },
+        "Input": "2 3 9 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "948": {
+        "puzzle": "1 2 3 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 * 2 = 2 (left: 2 3 13)"
+            },
+            "Step 1": {
+                "Step": "1 * 2 = 2 (left: 2 3 13) -> 3 / 2 = 1.5 (left: 1.5 13)"
+            },
+            "Step 2": {
+                "Step": "1 * 2 = 2 (left: 2 3 13) -> 3 / 2 = 1.5 (left: 1.5 13) -> 13 / 1.5 = 8.67 (left: 8.67)"
+            },
+            "Step 3": {
+                "Step": "1 * 2 = 2 (left: 2 3 13) -> 3 / 2 = 1.5 (left: 1.5 13) -> 13 / 1.5 = 8.67 (left: 8.67) -> Since there's only one number, there are no possible next steps."
+            }
+        },
+        "Input": "1 2 3 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "949": {
+        "puzzle": "1 6 6 6",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 1 = 5 (left: 5 6 6)"
+            },
+            "Step 1": {
+                "Step": "6 - 1 = 5 (left: 5 6 6) -> 6 / 5 = 1.2 (left: 6 1.2)"
+            },
+            "Step 2": {
+                "Step": "6 - 1 = 5 (left: 5 6 6) -> 6 / 5 = 1.2 (left: 6 1.2) -> 6 - 1.2 = 4.8 (left: 4.8)"
+            },
+            "Step 3": {
+                "Step": "6 - 1 = 5 (left: 5 6 6) -> 6 / 5 = 1.2 (left: 6 1.2) -> 6 - 1.2 = 4.8 (left: 4.8) -> 4.8 * 4.8 = 23.04 (left: 23.04)"
+            }
+        },
+        "Input": "1 6 6 6",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "950": {
+        "puzzle": "1 2 2 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 2 = 3 (left: 2 3 9)"
+            },
+            "Step 1": {
+                "Step": "1 + 2 = 3 (left: 2 3 9) -> 9 + 2 = 11 (left: 3 11)"
+            },
+            "Step 2": {
+                "Step": "1 + 2 = 3 (left: 2 3 9) -> 9 + 2 = 11 (left: 3 11) -> 11 / 3 = 3.67 (left: 3.67)"
+            },
+            "Step 3": {
+                "Step": "1 + 2 = 3 (left: 2 3 9) -> 9 + 2 = 11 (left: 3 11) -> 11 / 3 = 3.67 (left: 3.67) -> Since there is only one number, there are no possible next steps."
+            }
+        },
+        "Input": "1 2 2 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "951": {
+        "puzzle": "1 3 6 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 / 1 = 3 (left: 3 6 11)"
+            },
+            "Step 1": {
+                "Step": "3 / 1 = 3 (left: 3 6 11) -> 11 - 3 = 8 (left: 6 8)"
+            },
+            "Step 2": {
+                "Step": "3 / 1 = 3 (left: 3 6 11) -> 11 - 3 = 8 (left: 6 8) -> 8 * 6 = 48 (left: 48)"
+            },
+            "Step 3": {
+                "Step": "3 / 1 = 3 (left: 3 6 11) -> 11 - 3 = 8 (left: 6 8) -> 8 * 6 = 48 (left: 48) -> Since there is only one number, 48, there are no possible next steps."
+            }
+        },
+        "Input": "1 3 6 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "952": {
+        "puzzle": "5 10 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 + 10 = 15 (left: 5 12 13 15)"
+            },
+            "Step 1": {
+                "Step": "5 + 10 = 15 (left: 5 12 13 15) -> 15 - 5 = 10 (left: 10 12 13)"
+            },
+            "Step 2": {
+                "Step": "5 + 10 = 15 (left: 5 12 13 15) -> 15 - 5 = 10 (left: 10 12 13) -> 10 * 12 = 120 (left: 13 120)"
+            },
+            "Step 3": {
+                "Step": "5 + 10 = 15 (left: 5 12 13 15) -> 15 - 5 = 10 (left: 10 12 13) -> 10 * 12 = 120 (left: 13 120) -> 13 * 120 = 1560 (left: 1560)"
+            }
+        },
+        "Input": "5 10 12 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "953": {
+        "puzzle": "2 3 6 6",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 * 2 = 6 (left: 3 6 6)"
+            },
+            "Step 1": {
+                "Step": "3 * 2 = 6 (left: 3 6 6) -> 3 * 6 = 18 (left: 6 18)"
+            },
+            "Step 2": {
+                "Step": "3 * 2 = 6 (left: 3 6 6) -> 3 * 6 = 18 (left: 6 18) -> 6 * 18 = 108 (left: 108)"
+            },
+            "Step 3": {
+                "Step": "3 * 2 = 6 (left: 3 6 6) -> 3 * 6 = 18 (left: 6 18) -> 6 * 18 = 108 (left: 108) -> 108 * 1 = 108 (left: 108)"
+            }
+        },
+        "Input": "2 3 6 6",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "954": {
+        "puzzle": "6 7 10 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 + 10 = 16 (left: 7 12 16)"
+            },
+            "Step 1": {
+                "Step": "6 + 10 = 16 (left: 7 12 16) -> 7 - 12 = -5 (left: 16 -5)"
+            },
+            "Step 2": {
+                "Step": "6 + 10 = 16 (left: 7 12 16) -> 7 - 12 = -5 (left: 16 -5) -> 16 + (-5) = 11 (left: 11)"
+            },
+            "Step 3": {
+                "Step": "6 + 10 = 16 (left: 7 12 16) -> 7 - 12 = -5 (left: 16 -5) -> 16 + (-5) = 11 (left: 11) -> No possible steps since there is only one number"
+            }
+        },
+        "Input": "6 7 10 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "955": {
+        "puzzle": "7 8 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 * 8 = 56 (left: 8 12 56)"
+            },
+            "Step 1": {
+                "Step": "7 * 8 = 56 (left: 8 12 56) -> 8 + 12 = 20 (left: 20 56)"
+            },
+            "Step 2": {
+                "Step": "7 * 8 = 56 (left: 8 12 56) -> 8 + 12 = 20 (left: 20 56) -> 20 + 56 = 76 (left: 76)"
+            },
+            "Step 3": {
+                "Step": "7 * 8 = 56 (left: 8 12 56) -> 8 + 12 = 20 (left: 20 56) -> 20 + 56 = 76 (left: 76) -> 76 / 76 = 1 (left: 1)"
+            }
+        },
+        "Input": "7 8 8 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "956": {
+        "puzzle": "3 4 6 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 - 3 = 1 (left: 1 6 8)"
+            },
+            "Step 1": {
+                "Step": "4 - 3 = 1 (left: 1 6 8) -> 1 + 8 = 9 (left: 6 9)"
+            },
+            "Step 2": {
+                "Step": "4 - 3 = 1 (left: 1 6 8) -> 1 + 8 = 9 (left: 6 9) -> 6 + 9 = 15 (left: 15)"
+            },
+            "Step 3": {
+                "Step": "4 - 3 = 1 (left: 1 6 8) -> 1 + 8 = 9 (left: 6 9) -> 6 + 9 = 15 (left: 15) -> There is only one number, so there are no possible next steps."
+            }
+        },
+        "Input": "3 4 6 8",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "957": {
+        "puzzle": "1 7 9 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 11 = 12 (left: 7 9 12)"
+            },
+            "Step 1": {
+                "Step": "1 + 11 = 12 (left: 7 9 12) -> 9 - 7 = 2 (left: 2 12)"
+            },
+            "Step 2": {
+                "Step": "1 + 11 = 12 (left: 7 9 12) -> 9 - 7 = 2 (left: 2 12) -> 12 - 2 = 10 (left: 10)"
+            },
+            "Step 3": {
+                "Step": "1 + 11 = 12 (left: 7 9 12) -> 9 - 7 = 2 (left: 2 12) -> 12 - 2 = 10 (left: 10) -> There are no steps for a single number."
+            }
+        },
+        "Input": "1 7 9 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "958": {
+        "puzzle": "2 3 6 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 / 2 = 1.5 (left: 1.5 6 13)"
+            },
+            "Step 1": {
+                "Step": "3 / 2 = 1.5 (left: 1.5 6 13) -> 6 + 1.5 = 7.5 (left: 7.5 13)"
+            },
+            "Step 2": {
+                "Step": "3 / 2 = 1.5 (left: 1.5 6 13) -> 6 + 1.5 = 7.5 (left: 7.5 13) -> 13 / 7.5 = 1.733333333 (left: 1.733333333)"
+            },
+            "Step 3": {
+                "Step": "3 / 2 = 1.5 (left: 1.5 6 13) -> 6 + 1.5 = 7.5 (left: 7.5 13) -> 13 / 7.5 = 1.733333333 (left: 1.733333333) -> It seems like I need a second number to proceed. Please provide the initial set of numbers."
+            }
+        },
+        "Input": "2 3 6 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "959": {
+        "puzzle": "2 2 5 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 * 2 = 4 (left: 4 5 12)"
+            },
+            "Step 1": {
+                "Step": "2 * 2 = 4 (left: 4 5 12) -> 5 * 12 = 60 (left: 4 60)"
+            },
+            "Step 2": {
+                "Step": "2 * 2 = 4 (left: 4 5 12) -> 5 * 12 = 60 (left: 4 60) -> 60 - 4 = 56 (left: 56)"
+            },
+            "Step 3": {
+                "Step": "2 * 2 = 4 (left: 4 5 12) -> 5 * 12 = 60 (left: 4 60) -> 60 - 4 = 56 (left: 56) -> "
+            }
+        },
+        "Input": "2 2 5 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "960": {
+        "puzzle": "2 6 8 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 2 = 4 (left: 4 8 13)"
+            },
+            "Step 1": {
+                "Step": "6 - 2 = 4 (left: 4 8 13) -> 4 - 8 = -4 (left: -4 13)"
+            },
+            "Step 2": {
+                "Step": "6 - 2 = 4 (left: 4 8 13) -> 4 - 8 = -4 (left: -4 13) -> 13 - (-4) = 17 (left: 17)"
+            },
+            "Step 3": {
+                "Step": "6 - 2 = 4 (left: 4 8 13) -> 4 - 8 = -4 (left: -4 13) -> 13 - (-4) = 17 (left: 17) -> There is only one number left, so there are no possible next steps."
+            }
+        },
+        "Input": "2 6 8 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "961": {
+        "puzzle": "8 8 10 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "12 + 8 = 20 (left: 8 10 20)"
+            },
+            "Step 1": {
+                "Step": "12 + 8 = 20 (left: 8 10 20) -> 10 * 8 = 80 (left: 20 80)"
+            },
+            "Step 2": {
+                "Step": "12 + 8 = 20 (left: 8 10 20) -> 10 * 8 = 80 (left: 20 80) -> 80 / 20 = 4 (left: 4)"
+            },
+            "Step 3": {
+                "Step": "12 + 8 = 20 (left: 8 10 20) -> 10 * 8 = 80 (left: 20 80) -> 80 / 20 = 4 (left: 4) -> There are no possible next steps, as there is only one number left."
+            }
+        },
+        "Input": "8 8 10 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "962": {
+        "puzzle": "1 3 8 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 * 3 = 3 (left: 3 8 13)"
+            },
+            "Step 1": {
+                "Step": "1 * 3 = 3 (left: 3 8 13) -> 8 * 3 = 24 (left: 13 24)"
+            },
+            "Step 2": {
+                "Step": "1 * 3 = 3 (left: 3 8 13) -> 8 * 3 = 24 (left: 13 24) -> 24 - 13 = 11 (left: 11)"
+            },
+            "Step 3": {
+                "Step": "1 * 3 = 3 (left: 3 8 13) -> 8 * 3 = 24 (left: 13 24) -> 24 - 13 = 11 (left: 11) -> There are no other numbers to combine with 11, so there are no possible next steps."
+            }
+        },
+        "Input": "1 3 8 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "963": {
+        "puzzle": "4 4 7 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 - 4 = 0 (left: 0 7 10)"
+            },
+            "Step 1": {
+                "Step": "4 - 4 = 0 (left: 0 7 10) -> 7 + 10 = 17 (left: 0 17)"
+            },
+            "Step 2": {
+                "Step": "4 - 4 = 0 (left: 0 7 10) -> 7 + 10 = 17 (left: 0 17) -> 0 - 17 = -17 (left: -17)"
+            },
+            "Step 3": {
+                "Step": "4 - 4 = 0 (left: 0 7 10) -> 7 + 10 = 17 (left: 0 17) -> 0 - 17 = -17 (left: -17) -> There is only one number left, so there are no possible next steps"
+            }
+        },
+        "Input": "4 4 7 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "964": {
+        "puzzle": "1 7 10 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 7 = 8 (left: 8 10 13)"
+            },
+            "Step 1": {
+                "Step": "1 + 7 = 8 (left: 8 10 13) -> 10 + 13 = 23 (left: 8 23)"
+            },
+            "Step 2": {
+                "Step": "1 + 7 = 8 (left: 8 10 13) -> 10 + 13 = 23 (left: 8 23) -> 23 / 8 = 2.875 (left: 2.875)"
+            },
+            "Step 3": {
+                "Step": "1 + 7 = 8 (left: 8 10 13) -> 10 + 13 = 23 (left: 8 23) -> 23 / 8 = 2.875 (left: 2.875) -> "
+            }
+        },
+        "Input": "1 7 10 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "965": {
+        "puzzle": "1 9 10 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 10 = 11 (left: 9 11 13)"
+            },
+            "Step 1": {
+                "Step": "1 + 10 = 11 (left: 9 11 13) -> 11 - 13 = -2 (left: -2 9)"
+            },
+            "Step 2": {
+                "Step": "1 + 10 = 11 (left: 9 11 13) -> 11 - 13 = -2 (left: -2 9) -> 9 - (-2) = 11 (left: 11)"
+            },
+            "Step 3": {
+                "Step": "1 + 10 = 11 (left: 9 11 13) -> 11 - 13 = -2 (left: -2 9) -> 9 - (-2) = 11 (left: 11) -> (No possible steps, only 1 number left)"
+            }
+        },
+        "Input": "1 9 10 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "966": {
+        "puzzle": "3 3 4 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 - 3 = 0 (left: 0 4 11)"
+            },
+            "Step 1": {
+                "Step": "3 - 3 = 0 (left: 0 4 11) -> 11 - 0 = 11 (left: 4 11)"
+            },
+            "Step 2": {
+                "Step": "3 - 3 = 0 (left: 0 4 11) -> 11 - 0 = 11 (left: 4 11) -> 11 - 4 = 7 (left: 7)"
+            },
+            "Step 3": {
+                "Step": "3 - 3 = 0 (left: 0 4 11) -> 11 - 0 = 11 (left: 4 11) -> 11 - 4 = 7 (left: 7) -> There is only one number left."
+            }
+        },
+        "Input": "3 3 4 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "967": {
+        "puzzle": "2 5 7 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 + 2 = 9 (left: 5 7 9)"
+            },
+            "Step 1": {
+                "Step": "7 + 2 = 9 (left: 5 7 9) -> 5 * 7 = 35 (left: 9 35)"
+            },
+            "Step 2": {
+                "Step": "7 + 2 = 9 (left: 5 7 9) -> 5 * 7 = 35 (left: 9 35) -> 9 - 35 = -26 (left: -26)"
+            },
+            "Step 3": {
+                "Step": "7 + 2 = 9 (left: 5 7 9) -> 5 * 7 = 35 (left: 9 35) -> 9 - 35 = -26 (left: -26) -> -26 - (-1) = -25 (left: -25)"
+            }
+        },
+        "Input": "2 5 7 7",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "968": {
+        "puzzle": "3 9 10 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "9 + 10 = 19 (left: 3 13 19)"
+            },
+            "Step 1": {
+                "Step": "9 + 10 = 19 (left: 3 13 19) -> 13 * 3 = 39 (left: 19 39)"
+            },
+            "Step 2": {
+                "Step": "9 + 10 = 19 (left: 3 13 19) -> 13 * 3 = 39 (left: 19 39) -> 19 + 39 = 58 (left: 58)"
+            },
+            "Step 3": {
+                "Step": "9 + 10 = 19 (left: 3 13 19) -> 13 * 3 = 39 (left: 19 39) -> 19 + 39 = 58 (left: 58) -> There are no possible steps because there is only one number left."
+            }
+        },
+        "Input": "3 9 10 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "969": {
+        "puzzle": "2 3 4 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 2 = 5 (left: 4 5 7)"
+            },
+            "Step 1": {
+                "Step": "3 + 2 = 5 (left: 4 5 7) -> 4 + 5 = 9 (left: 7 9)"
+            },
+            "Step 2": {
+                "Step": "3 + 2 = 5 (left: 4 5 7) -> 4 + 5 = 9 (left: 7 9) -> 7 + 9 = 16 (left: 16)"
+            },
+            "Step 3": {
+                "Step": "3 + 2 = 5 (left: 4 5 7) -> 4 + 5 = 9 (left: 7 9) -> 7 + 9 = 16 (left: 16) -> Possible next steps: None"
+            }
+        },
+        "Input": "2 3 4 7",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "970": {
+        "puzzle": "4 4 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "12 + 4 = 16 (left: 4 8 16)"
+            },
+            "Step 1": {
+                "Step": "12 + 4 = 16 (left: 4 8 16) -> 8 / 4 = 2 (left: 2 16)"
+            },
+            "Step 2": {
+                "Step": "12 + 4 = 16 (left: 4 8 16) -> 8 / 4 = 2 (left: 2 16) -> 16 / 2 = 8 (left: 8)"
+            },
+            "Step 3": {
+                "Step": "12 + 4 = 16 (left: 4 8 16) -> 8 / 4 = 2 (left: 2 16) -> 16 / 2 = 8 (left: 8) -> No possible next steps"
+            }
+        },
+        "Input": "4 4 8 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "971": {
+        "puzzle": "1 2 6 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 * 2 = 2 (left: 2 6 10)"
+            },
+            "Step 1": {
+                "Step": "1 * 2 = 2 (left: 2 6 10) -> 2 - 6 = -4 (left: -4 10)"
+            },
+            "Step 2": {
+                "Step": "1 * 2 = 2 (left: 2 6 10) -> 2 - 6 = -4 (left: -4 10) -> 10 / -4 = -2.5 (left: -2.5)"
+            },
+            "Step 3": {
+                "Step": "1 * 2 = 2 (left: 2 6 10) -> 2 - 6 = -4 (left: -4 10) -> 10 / -4 = -2.5 (left: -2.5) -> Since there's only one number, there are no possible next steps."
+            }
+        },
+        "Input": "1 2 6 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "972": {
+        "puzzle": "1 5 12 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 * 5 = 5 (left: 5 12 12)"
+            },
+            "Step 1": {
+                "Step": "1 * 5 = 5 (left: 5 12 12) -> 12 / 5 = 2.4 (left: 2.4 12)"
+            },
+            "Step 2": {
+                "Step": "1 * 5 = 5 (left: 5 12 12) -> 12 / 5 = 2.4 (left: 2.4 12) -> 2.4 - 12 = -9.6 (left: -9.6)"
+            },
+            "Step 3": {
+                "Step": "1 * 5 = 5 (left: 5 12 12) -> 12 / 5 = 2.4 (left: 2.4 12) -> 2.4 - 12 = -9.6 (left: -9.6) -> There is only one number, so there are no possible next steps."
+            }
+        },
+        "Input": "1 5 12 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "973": {
+        "puzzle": "5 6 6 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 - 6 = -1 (left: 6 6 8 -1)"
+            },
+            "Step 1": {
+                "Step": "5 - 6 = -1 (left: 6 6 8 -1) -> -1 - 6 = -7 (left: 6 8 -7)"
+            },
+            "Step 2": {
+                "Step": "5 - 6 = -1 (left: 6 6 8 -1) -> -1 - 6 = -7 (left: 6 8 -7) -> 8 / 6 = 1.33 (left: 1.33 -7)"
+            },
+            "Step 3": {
+                "Step": "5 - 6 = -1 (left: 6 6 8 -1) -> -1 - 6 = -7 (left: 6 8 -7) -> 8 / 6 = 1.33 (left: 1.33 -7) -> (-7) / 1.33 = -5.26 (left: -5.26)"
+            }
+        },
+        "Input": "5 6 6 8",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "974": {
+        "puzzle": "7 7 8 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "7 + 7 = 14 (left: 8 11 14)"
+            },
+            "Step 1": {
+                "Step": "7 + 7 = 14 (left: 8 11 14) -> 14 - 8 = 6 (left: 6 11)"
+            },
+            "Step 2": {
+                "Step": "7 + 7 = 14 (left: 8 11 14) -> 14 - 8 = 6 (left: 6 11) -> 11 + 6 = 17 (left: 17)"
+            },
+            "Step 3": {
+                "Step": "7 + 7 = 14 (left: 8 11 14) -> 14 - 8 = 6 (left: 6 11) -> 11 + 6 = 17 (left: 17) -> No possible next steps, since there is only one number left."
+            }
+        },
+        "Input": "7 7 8 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "975": {
+        "puzzle": "1 3 7 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 7 = 8 (left: 3 8 10)"
+            },
+            "Step 1": {
+                "Step": "1 + 7 = 8 (left: 3 8 10) -> 8 * 10 = 80 (left: 3 80)"
+            },
+            "Step 2": {
+                "Step": "1 + 7 = 8 (left: 3 8 10) -> 8 * 10 = 80 (left: 3 80) -> 4. 80 / 3 = 26.67 (left: 26.67)"
+            },
+            "Step 3": {
+                "Step": "1 + 7 = 8 (left: 3 8 10) -> 8 * 10 = 80 (left: 3 80) -> 4. 80 / 3 = 26.67 (left: 26.67) -> This input is a single number, so there are no possible next steps."
+            }
+        },
+        "Input": "1 3 7 10",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "976": {
+        "puzzle": "3 3 9 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 3 = 6 (left: 6 9 12)"
+            },
+            "Step 1": {
+                "Step": "3 + 3 = 6 (left: 6 9 12) -> 6 * 9 = 54 (left: 12 54)"
+            },
+            "Step 2": {
+                "Step": "3 + 3 = 6 (left: 6 9 12) -> 6 * 9 = 54 (left: 12 54) -> 54 + 12 = 66 (left: 66)"
+            },
+            "Step 3": {
+                "Step": "3 + 3 = 6 (left: 6 9 12) -> 6 * 9 = 54 (left: 12 54) -> 54 + 12 = 66 (left: 66) -> Since there is only one number, there are no possible next steps."
+            }
+        },
+        "Input": "3 3 9 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "977": {
+        "puzzle": "3 5 7 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 * 5 = 15 (left: 7 10 15)"
+            },
+            "Step 1": {
+                "Step": "3 * 5 = 15 (left: 7 10 15) -> 10 / 7 = 1 (left: 1 10 15)"
+            },
+            "Step 2": {
+                "Step": "3 * 5 = 15 (left: 7 10 15) -> 10 / 7 = 1 (left: 1 10 15) -> 10 * 1 = 10 (left: 10 15)"
+            },
+            "Step 3": {
+                "Step": "3 * 5 = 15 (left: 7 10 15) -> 10 / 7 = 1 (left: 1 10 15) -> 10 * 1 = 10 (left: 10 15) -> 15 / 10 = 1.5 (left: 1.5)"
+            }
+        },
+        "Input": "3 5 7 10",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "978": {
+        "puzzle": "4 10 12 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 * 10 = 40 (left: 12 13 40)"
+            },
+            "Step 1": {
+                "Step": "4 * 10 = 40 (left: 12 13 40) -> 40 - 12 = 28 (left: 13 28)"
+            },
+            "Step 2": {
+                "Step": "4 * 10 = 40 (left: 12 13 40) -> 40 - 12 = 28 (left: 13 28) -> 13 + 28 = 41 (left: 41)"
+            },
+            "Step 3": {
+                "Step": "4 * 10 = 40 (left: 12 13 40) -> 40 - 12 = 28 (left: 13 28) -> 13 + 28 = 41 (left: 41) -> 41 / 41 = 1 (left: 1)"
+            }
+        },
+        "Input": "4 10 12 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "979": {
+        "puzzle": "2 3 10 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 10 = 13 (left: 2 13 12)"
+            },
+            "Step 1": {
+                "Step": "3 + 10 = 13 (left: 2 13 12) -> 13 / 2 = 6.5 (left: 6.5 12)"
+            },
+            "Step 2": {
+                "Step": "3 + 10 = 13 (left: 2 13 12) -> 13 / 2 = 6.5 (left: 6.5 12) -> 6.5 + 12 = 18.5 (left: 18.5)"
+            },
+            "Step 3": {
+                "Step": "3 + 10 = 13 (left: 2 13 12) -> 13 / 2 = 6.5 (left: 6.5 12) -> 6.5 + 12 = 18.5 (left: 18.5) -> There is only one number."
+            }
+        },
+        "Input": "2 3 10 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "980": {
+        "puzzle": "3 4 6 6",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 - 3 = 1 (left: 1 6 6)"
+            },
+            "Step 1": {
+                "Step": "4 - 3 = 1 (left: 1 6 6) -> 1 + 6 = 7 (left: 6 7)"
+            },
+            "Step 2": {
+                "Step": "4 - 3 = 1 (left: 1 6 6) -> 1 + 6 = 7 (left: 6 7) -> 6 + 7 = 13 (left: 13)"
+            },
+            "Step 3": {
+                "Step": "4 - 3 = 1 (left: 1 6 6) -> 1 + 6 = 7 (left: 6 7) -> 6 + 7 = 13 (left: 13) -> Since there is only one number, there are no possible next steps."
+            }
+        },
+        "Input": "3 4 6 6",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "981": {
+        "puzzle": "5 8 8 8",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "8 + 8 = 16 (left: 5 8 16)"
+            },
+            "Step 1": {
+                "Step": "8 + 8 = 16 (left: 5 8 16) -> 16 / 5 = 3.2 (left: 3.2 8)"
+            },
+            "Step 2": {
+                "Step": "8 + 8 = 16 (left: 5 8 16) -> 16 / 5 = 3.2 (left: 3.2 8) -> 3.2 * 8 = 25.6 (left: 25.6)"
+            },
+            "Step 3": {
+                "Step": "8 + 8 = 16 (left: 5 8 16) -> 16 / 5 = 3.2 (left: 3.2 8) -> 3.2 * 8 = 25.6 (left: 25.6) -> Since there's only one number, there are no possible next steps."
+            }
+        },
+        "Input": "5 8 8 8",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "982": {
+        "puzzle": "6 8 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 + 12 = 18 (left: 8 8 18)"
+            },
+            "Step 1": {
+                "Step": "6 + 12 = 18 (left: 8 8 18) -> 8 * 8 = 64 (left: 64 18)"
+            },
+            "Step 2": {
+                "Step": "6 + 12 = 18 (left: 8 8 18) -> 8 * 8 = 64 (left: 64 18) -> 64 * 18 = 1152 (left: 1152)"
+            },
+            "Step 3": {
+                "Step": "6 + 12 = 18 (left: 8 8 18) -> 8 * 8 = 64 (left: 64 18) -> 64 * 18 = 1152 (left: 1152) -> 1152 / 1 = 1152 (left: 1152)"
+            }
+        },
+        "Input": "6 8 8 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "983": {
+        "puzzle": "2 3 4 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 - 2 = 1 (left: 1 4 9)"
+            },
+            "Step 1": {
+                "Step": "3 - 2 = 1 (left: 1 4 9) -> 9 - 4 = 5 (left: 1 5)"
+            },
+            "Step 2": {
+                "Step": "3 - 2 = 1 (left: 1 4 9) -> 9 - 4 = 5 (left: 1 5) -> 1 + 5 = 6 (left: 6)"
+            },
+            "Step 3": {
+                "Step": "3 - 2 = 1 (left: 1 4 9) -> 9 - 4 = 5 (left: 1 5) -> 1 + 5 = 6 (left: 6) -> No possible next steps."
+            }
+        },
+        "Input": "2 3 4 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "984": {
+        "puzzle": "2 6 7 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "6 - 2 = 4 (left: 4 7 11)"
+            },
+            "Step 1": {
+                "Step": "6 - 2 = 4 (left: 4 7 11) -> 11 + 4 = 15 (left: 7 15)"
+            },
+            "Step 2": {
+                "Step": "6 - 2 = 4 (left: 4 7 11) -> 11 + 4 = 15 (left: 7 15) -> 15 - 7 = 8 (left: 8)"
+            },
+            "Step 3": {
+                "Step": "6 - 2 = 4 (left: 4 7 11) -> 11 + 4 = 15 (left: 7 15) -> 15 - 7 = 8 (left: 8) -> There are no possible next steps as there is only one number left."
+            }
+        },
+        "Input": "2 6 7 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "985": {
+        "puzzle": "5 9 12 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 + 9 = 14 (left: 12 12 14)"
+            },
+            "Step 1": {
+                "Step": "5 + 9 = 14 (left: 12 12 14) -> 12 + 14 = 26 (left: 12 26)"
+            },
+            "Step 2": {
+                "Step": "5 + 9 = 14 (left: 12 12 14) -> 12 + 14 = 26 (left: 12 26) -> 12 + 26 = 38 (left: 38)"
+            },
+            "Step 3": {
+                "Step": "5 + 9 = 14 (left: 12 12 14) -> 12 + 14 = 26 (left: 12 26) -> 12 + 26 = 38 (left: 38) -> 38 - 38 = 0 (left: 0)"
+            }
+        },
+        "Input": "5 9 12 12",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "986": {
+        "puzzle": "1 2 7 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "1 + 2 = 3 (left: 3 7 12)"
+            },
+            "Step 1": {
+                "Step": "1 + 2 = 3 (left: 3 7 12) -> 12 / 3 = 4 (left: 4 7)"
+            },
+            "Step 2": {
+                "Step": "1 + 2 = 3 (left: 3 7 12) -> 12 / 3 = 4 (left: 4 7) -> 4 + 7 = 11 (left: 11)"
+            },
+            "Step 3": {
+                "Step": "1 + 2 = 3 (left: 3 7 12) -> 12 / 3 = 4 (left: 4 7) -> 4 + 7 = 11 (left: 11) -> There are no possible next steps with only one number."
+            }
+        },
+        "Input": "1 2 7 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "987": {
+        "puzzle": "2 4 5 6",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 + 4 = 6 (left: 5 6 6)"
+            },
+            "Step 1": {
+                "Step": "2 + 4 = 6 (left: 5 6 6) -> 5 + 6 = 11 (left: 6 11)"
+            },
+            "Step 2": {
+                "Step": "2 + 4 = 6 (left: 5 6 6) -> 5 + 6 = 11 (left: 6 11) -> 11 - 6 = 5 (left: 5)"
+            },
+            "Step 3": {
+                "Step": "2 + 4 = 6 (left: 5 6 6) -> 5 + 6 = 11 (left: 6 11) -> 11 - 6 = 5 (left: 5) -> No possible next steps."
+            }
+        },
+        "Input": "2 4 5 6",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "988": {
+        "puzzle": "5 5 8 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "8 + 13 = 21 (left: 5 8 21)"
+            },
+            "Step 1": {
+                "Step": "8 + 13 = 21 (left: 5 8 21) -> 8 + 21 = 29 (left: 5 29)"
+            },
+            "Step 2": {
+                "Step": "8 + 13 = 21 (left: 5 8 21) -> 8 + 21 = 29 (left: 5 29) -> 5 + 29 = 34 (left: 34)"
+            },
+            "Step 3": {
+                "Step": "8 + 13 = 21 (left: 5 8 21) -> 8 + 21 = 29 (left: 5 29) -> 5 + 29 = 34 (left: 34) -> 34 - 34 = 0 (left: 0)"
+            }
+        },
+        "Input": "5 5 8 13",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "989": {
+        "puzzle": "2 3 3 10",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 * 3 = 9 (left: 2 3 9 10)"
+            },
+            "Step 1": {
+                "Step": "3 * 3 = 9 (left: 2 3 9 10) -> 3 - 2 = 1 (left: 1 9 10)"
+            },
+            "Step 2": {
+                "Step": "3 * 3 = 9 (left: 2 3 9 10) -> 3 - 2 = 1 (left: 1 9 10) -> 1 + 9 = 10 (left: 10 10)"
+            },
+            "Step 3": {
+                "Step": "3 * 3 = 9 (left: 2 3 9 10) -> 3 - 2 = 1 (left: 1 9 10) -> 1 + 9 = 10 (left: 10 10) -> 10 - 10 = 0 (left: 0)"
+            }
+        },
+        "Input": "2 3 3 10",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "990": {
+        "puzzle": "3 4 8 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "3 + 12 = 15 (left: 15 4 8)"
+            },
+            "Step 1": {
+                "Step": "3 + 12 = 15 (left: 15 4 8) -> 8 / 4 = 2 (left: 2 15)"
+            },
+            "Step 2": {
+                "Step": "3 + 12 = 15 (left: 15 4 8) -> 8 / 4 = 2 (left: 2 15) -> 15 / 2 = 7.5 (left: 7.5)"
+            },
+            "Step 3": {
+                "Step": "3 + 12 = 15 (left: 15 4 8) -> 8 / 4 = 2 (left: 2 15) -> 15 / 2 = 7.5 (left: 7.5) -> No possible next steps."
+            }
+        },
+        "Input": "3 4 8 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "991": {
+        "puzzle": "2 4 6 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 / 2 = 2 (left: 2 6 11)"
+            },
+            "Step 1": {
+                "Step": "4 / 2 = 2 (left: 2 6 11) -> 6 - 2 = 4 (left: 4 11)"
+            },
+            "Step 2": {
+                "Step": "4 / 2 = 2 (left: 2 6 11) -> 6 - 2 = 4 (left: 4 11) -> 11 * 4 = 44 (left: 44)"
+            },
+            "Step 3": {
+                "Step": "4 / 2 = 2 (left: 2 6 11) -> 6 - 2 = 4 (left: 4 11) -> 11 * 4 = 44 (left: 44) -> Since there is only one number left, there are no possible next steps."
+            }
+        },
+        "Input": "2 4 6 11",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "992": {
+        "puzzle": "2 2 8 9",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 + 2 = 4 (left: 4 8 9)"
+            },
+            "Step 1": {
+                "Step": "2 + 2 = 4 (left: 4 8 9) -> 8 / 4 = 2 (left: 2 9)"
+            },
+            "Step 2": {
+                "Step": "2 + 2 = 4 (left: 4 8 9) -> 8 / 4 = 2 (left: 2 9) -> 2 - 9 = -7 (left: -7)"
+            },
+            "Step 3": {
+                "Step": "2 + 2 = 4 (left: 4 8 9) -> 8 / 4 = 2 (left: 2 9) -> 2 - 9 = -7 (left: -7) -> Since there's only one number, there's no possible next step."
+            }
+        },
+        "Input": "2 2 8 9",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "993": {
+        "puzzle": "1 5 6 7",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "5 + 6 = 11 (left: 11 1 7)"
+            },
+            "Step 1": {
+                "Step": "5 + 6 = 11 (left: 11 1 7) -> 11 - 7 = 4 (left: 1 4)"
+            },
+            "Step 2": {
+                "Step": "5 + 6 = 11 (left: 11 1 7) -> 11 - 7 = 4 (left: 1 4) -> 1 - 4 = -3 (left: -3)"
+            },
+            "Step 3": {
+                "Step": "5 + 6 = 11 (left: 11 1 7) -> 11 - 7 = 4 (left: 1 4) -> 1 - 4 = -3 (left: -3) -> No possible next steps"
+            }
+        },
+        "Input": "1 5 6 7",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "994": {
+        "puzzle": "5 8 10 11",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "11 + 5 = 16 (left: 8 10 16)"
+            },
+            "Step 1": {
+                "Step": "11 + 5 = 16 (left: 8 10 16) -> 16 - 10 = 6 (left: 6 8)"
+            },
+            "Step 2": {
+                "Step": "11 + 5 = 16 (left: 8 10 16) -> 16 - 10 = 6 (left: 6 8) -> 6 + 8 = 14 (left: 14)"
+            },
+            "Step 3": {
+                "Step": "11 + 5 = 16 (left: 8 10 16) -> 16 - 10 = 6 (left: 6 8) -> 6 + 8 = 14 (left: 14) -> 14 * 14 = 196 (left: 196)"
+            }
+        },
+        "Input": "5 8 10 11",
+        "Verifications": [
+            {
+                "r": -1
+            }
+        ]
+    },
+    "995": {
+        "puzzle": "4 4 9 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "12 - 4 = 8 (left: 4 8 9)"
+            },
+            "Step 1": {
+                "Step": "12 - 4 = 8 (left: 4 8 9) -> 8 + 4 = 12 (left: 9 12)"
+            },
+            "Step 2": {
+                "Step": "12 - 4 = 8 (left: 4 8 9) -> 8 + 4 = 12 (left: 9 12) -> 9 - 12 = -3 (left: -3)"
+            },
+            "Step 3": {
+                "Step": "12 - 4 = 8 (left: 4 8 9) -> 8 + 4 = 12 (left: 9 12) -> 9 - 12 = -3 (left: -3) -> No possible next steps"
+            }
+        },
+        "Input": "4 4 9 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "996": {
+        "puzzle": "2 5 6 6",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "2 + 6 = 8 (left: 5 6 8)"
+            },
+            "Step 1": {
+                "Step": "2 + 6 = 8 (left: 5 6 8) -> 5 + 6 = 11 (left: 8 11)"
+            },
+            "Step 2": {
+                "Step": "2 + 6 = 8 (left: 5 6 8) -> 5 + 6 = 11 (left: 8 11) -> 11 / 8 = 1.375 (left: 1.375)"
+            },
+            "Step 3": {
+                "Step": "2 + 6 = 8 (left: 5 6 8) -> 5 + 6 = 11 (left: 8 11) -> 11 / 8 = 1.375 (left: 1.375) -> Note that typically, you would start with multiple numbers, and then perform operations to obtain a new number. Since there's only one number here, there's no operation to perform."
+            }
+        },
+        "Input": "2 5 6 6",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "997": {
+        "puzzle": "2 4 9 12",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 - 2 = 2 (left: 2 9 12)"
+            },
+            "Step 1": {
+                "Step": "4 - 2 = 2 (left: 2 9 12) -> 2 + 9 = 11 (left: 11 12)"
+            },
+            "Step 2": {
+                "Step": "4 - 2 = 2 (left: 2 9 12) -> 2 + 9 = 11 (left: 11 12) -> 12 - 11 = 1 (left: 1)"
+            },
+            "Step 3": {
+                "Step": "4 - 2 = 2 (left: 2 9 12) -> 2 + 9 = 11 (left: 11 12) -> 12 - 11 = 1 (left: 1) -> No next steps"
+            }
+        },
+        "Input": "2 4 9 12",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "998": {
+        "puzzle": "4 8 11 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "8 / 4 = 2 (left: 2 11 13)"
+            },
+            "Step 1": {
+                "Step": "8 / 4 = 2 (left: 2 11 13) -> 11 / 2 = 5.5 (left: 5.5 13)"
+            },
+            "Step 2": {
+                "Step": "8 / 4 = 2 (left: 2 11 13) -> 11 / 2 = 5.5 (left: 5.5 13) -> 13 / 5.5 = 2.36 (left: 2.36)"
+            },
+            "Step 3": {
+                "Step": "8 / 4 = 2 (left: 2 11 13) -> 11 / 2 = 5.5 (left: 5.5 13) -> 13 / 5.5 = 2.36 (left: 2.36) -> Since the input only contains one number, there are no possible next steps."
+            }
+        },
+        "Input": "4 8 11 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "999": {
+        "puzzle": "4 9 10 13",
+        "Agent 0": {
+            "Step 0": {
+                "Step": "4 * 9 = 36 (left: 10 13 36)"
+            },
+            "Step 1": {
+                "Step": "4 * 9 = 36 (left: 10 13 36) -> 36 - 10 = 26 (left: 13 26)"
+            },
+            "Step 2": {
+                "Step": "4 * 9 = 36 (left: 10 13 36) -> 36 - 10 = 26 (left: 13 26) -> 13 + 26 = 39 (left: 39)"
+            },
+            "Step 3": {
+                "Step": "4 * 9 = 36 (left: 10 13 36) -> 36 - 10 = 26 (left: 13 26) -> 13 + 26 = 39 (left: 39) -> Since there is only one number, no operations are possible."
+            }
+        },
+        "Input": "4 9 10 13",
+        "Verifications": [
+            {
+                "r": 0
+            }
+        ]
+    },
+    "Info": {
+        "Cost": {
+            "Step": {
+                "input_cost": 0.1194732,
+                "output_cost": 0.03778008,
+                "total_cost": 0.15725328
+            },
+            "Evaluation": {
+                "input_cost": 0,
+                "output_cost": 0,
+                "total_cost": 0
+            },
+            "Total cost": {
+                "input_cost": 0.1194732,
+                "output_cost": 0.03778008,
+                "total_cost": 0.15725328
+            }
+        },
+        "Tokens": {
+            "Step": {
+                "input_tokens": 99561,
+                "output_tokens": 31483.4,
+                "total_tokens": 131044.4
+            },
+            "Evaluation": {
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "total_tokens": 0
+            },
+            "Total cost": {
+                "input_tokens": 99561,
+                "output_tokens": 31483.4,
+                "total_tokens": 131044.4
+            }
+        },
+        "Models": {
+            "Step": {
+                "model_name": "meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo",
+                "provider": "TogetherAI"
+            },
+            "Evaluation": {
+                "model_name": "meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo",
+                "provider": "TogetherAI"
+            }
+        },
+        "FoA options": {
+            "num_agents": 1,
+            "k": 0,
+            "origin_value": 120.0,
+            "num_steps": 4,
+            "backtrack": 0.5,
+            "resampling_method": "linear_filtered",
+            "pruning": 0,
+            "caching": 0,
+            "batching": 0
+        },
+        "Run options": {
+            "task": "GameOf24",
+            "set": "test",
+            "seed": 5,
+            "debugging": 0
+        }
+    }
+}

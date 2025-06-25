@@ -1,0 +1,87 @@
+import random
+import logging
+import asyncio
+from typing import TypedDict
+from ..typedefs import Algorithm, Model, Agent, Environment, DecodingParameters, State, Benchmark, MAX_SEED, StateReturningAgent
+from ..utils import Resampler
+logger = logging.getLogger(__name__)
+
+
+class AgentDictReflectSummary(TypedDict):
+    step: Agent
+    evaluate: Agent
+    step_params: DecodingParameters
+    eval_params: DecodingParameters
+    
+def wrap_agent_in_env(agent_class, env):
+    class WrappedAgent(agent_class, StateReturningAgent):
+        @staticmethod
+        async def act(model: Model, state: State, n: int, namespace: str, request_id: str, params: DecodingParameters):
+            actions = await agent_class.act(model=model, state=state, n=n, namespace=namespace, request_id=request_id, params=params)
+            new_states = [env.step(state, action) for action in actions]
+            return new_states
+
+
+class AlgorithmReflectSummary(Algorithm):
+    def __init__(self,
+                 model: Model,
+                 agents: AgentDictReflectSummary,
+                 env: Environment,
+                 num_steps: int,
+                 origin: float,
+                 min_steps:int,
+                 num_evaluations: int,
+                 ):
+        super().__init__(model, agents, env)
+        
+        self.step_agent = agents["step"]
+        self.eval_agent = agents["evaluate"]
+        
+        self.step_params = agents["step_params"]
+        self.eval_params = agents["eval_params"]
+        
+        self.num_steps = num_steps
+        self.origin = origin
+        self.min_steps = min_steps
+        self.num_evaluations = num_evaluations
+        
+    async def solve(self, idx: int, state: State, namespace: str, value_cache: dict = None):
+        randomness = idx
+        random.seed(randomness)
+        state = state.clone(randomness=random.randint(0, MAX_SEED))
+        
+        for step in range(self.num_steps):
+            print(f"Step {step} ({idx})")
+            
+            # The agent returns a list of states.
+            new_states = await self.step_agent.act(
+                model=self.model,
+                state=state,
+                n=1,
+                namespace=namespace,
+                request_id=f"idx{idx}-step{step}-{hash(state)}",
+                params=self.step_params
+            )
+            
+            if not new_states:
+                logger.warning(f"Agent returned no new states for index {idx}, step {step}. Stopping.")
+                break
+            state = new_states[0]
+            
+            if self.env.evaluate(state)[1] == 1:
+                break
+        return [state]
+    
+    async def benchmark(self, benchmark: Benchmark, share_ns: bool=False, cache: bool=True):
+        solve_coroutines = [
+            self.solve(
+                idx=index,
+                state=state,
+                namespace="benchmark" if share_ns else f"benchmark-{index}",
+                value_cache=None
+            )
+            for index, state in benchmark
+        ]
+        results = await asyncio.gather(*solve_coroutines)
+        return results
+    
