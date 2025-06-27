@@ -10,13 +10,14 @@ class BenchmarkHumanEval(Benchmark):
         """
         Initializes the Benchmark for HumanEval dataset.
         """
+        random.seed(42)
 
         df = pd.read_csv(path, usecols=["prompt", "entry_point", "test"], compression="gzip")
         df.reset_index(inplace=True)
         data = list(zip(df['index'], df['prompt'], df['entry_point'], df['test']))
 
         if split == "mini":
-            self.data = random.sample(data, 3)
+            self.data = random.sample(data, 25)
         elif split == "train":
             self.data = random.sample(data, 50)
         elif split == "validation":

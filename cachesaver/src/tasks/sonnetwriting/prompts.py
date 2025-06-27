@@ -63,10 +63,10 @@ Required Words: grass, value, jail
 The mountain sighs beneath the winter snow
 The river carves its path with solemn might
 The flowers sleep beneath the frozen glow
-Awaiting touch of spring’s returning light
+Awaiting touch of spring's returning light
 
 No jail confines the wild and restless breeze
-It tumbles past the valley’s sleeping door
+It tumbles past the valley's sleeping door
 The grass will rise when winter grants release
 Yet value fades along the rocky shore
 
@@ -117,7 +117,7 @@ A bitter memory clenched within a fist (B)
 
 The river moans beneath a sky of ash (D)  
 Its course forgotten by the sleeping stone (E)  
-The mountains tremble under thunder’s crash (D)  
+The mountains tremble under thunder's crash (D)  
 The plains are silent, aching and alone (F)  
 
 No voices rise above the broken field (G)  
@@ -372,3 +372,75 @@ Sonnet:
 
 Is this sonnet correct and well-written? Answer with a single word: Yes or No.
 '''
+
+examples_reflect = [
+    """Task: Write a sonnet with rhyme scheme ABAB CDCD EFEF GG, including "grass", "value", and "jail".
+
+Scratchpad:
+The sun is hot, a fire in the sky, (A)
+The moon is pale, a ghost among the clouds, (B)
+The little stars, they twinkle up so high, (A)
+Away from all the noisy, earthly crowds. (B)
+
+I like to watch them when I'm all alone, (C)
+It makes me think of things both big and small, (D)
+Like why we're here, on this small, rocky stone, (C)
+And if there's any meaning to it all. (D)
+
+The sun is a star, but it is much more near,
+The moon just reflects light, it has no own.
+The stars are so far, they fill me with fear.
+---
+Reflection: The sonnet structure was lost towards the end. It should be three quatrains (4 lines each) and a final couplet (2 lines). The rhyme scheme also faltered in the last six lines. Focus on maintaining the ABAB CDCD EFEF GG structure throughout and ensure the final two lines form a rhyming couplet to conclude the theme.""",
+    """Task: Write a Petrarchan sonnet (ABBA ABBA CDECDE) about the ocean, mountain, and sky.
+
+Scratchpad:
+The vast ocean, so deep and blue, (A)
+Stretches out to meet the endless sky, (B)
+A canvas painted with a morning hue, (A)
+Where lonely sea-birds sadly cry. (B)
+
+The mountain stands in silent, rugged grace, (C)
+A silent watcher of the land and sea, (D)
+It wears a crown in this majestic place, (C)
+And looks at the sky for eternity. (D)
+
+I see the ocean, I see the mountain tall,
+The sky is big, it covers everything.
+---
+Reflection: The attempt did not follow the required Petrarchan sonnet structure of an octave (ABBA ABBA) and a sestet. The rhyme scheme was incorrect from the first quatrain, and the poem was too short. It's important to first map out the rhymes for each line according to the ABBA ABBA CDECDE scheme and then build the poem's content around that structure, ensuring all required words are woven in naturally."""
+]
+
+reflect = '''You are an expert poet who can reflect on a failed attempt to write a sonnet and provide guidance for improvement.
+I tried to write a sonnet, but I failed.
+I will give you my task (the required rhyme scheme and words) and my attempt (the scratchpad).
+Your task is to analyze my attempt and my reasoning process.
+Then, you must provide a concise and high-level reflection on my approach.
+This reflection should be a few sentences long and should not contain a new sonnet.
+The reflection should identify the flaws in my writing, such as not following the rhyme scheme, missing words, or having poor flow, and suggest a better strategy for the next trial.
+It should be helpful for me to read this reflection and write a better sonnet in the next trial.
+
+{examples}
+
+(End of examples)
+
+Task: {question}
+
+Scratchpad:
+{scratchpad}
+'''
+
+act_with_reflect = """You are fluent in sonnet writing and can only respond with your sonnet and nothing else.
+Below, you will be given your task and keywords to include in your sonnet writing. Remember to return only your sonnet writing.
+
+{reflections_header}
+{reflections}
+
+{input}
+"""
+
+summarize_reflections = "The following are reflections on a series of trials to write a sonnet:\n{reflections}\n\nPlease summarize these reflections into a concise set of learnings that can be used to guide the next trial."
+
+REFLECTION_HEADER = 'You have attempted to write a sonnet before and failed. The following reflection(s) give a plan to avoid failing in the same way you did previously. Use them to improve your strategy for writing the sonnet.\n'
+REFLECTION_SUMMARY_HEADER = "You have the following summary of reflections from previous attempts:"
+

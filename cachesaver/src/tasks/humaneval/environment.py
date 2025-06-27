@@ -19,10 +19,6 @@ from ...typedefs import Environment, MAX_SEED
 TIMEOUT = 5.0
 
 class EnvironmentHumanEval(Environment):
-    name = 'humaneval'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
     @staticmethod
     def step(state: StateHumanEval, action: str) -> StateHumanEval:

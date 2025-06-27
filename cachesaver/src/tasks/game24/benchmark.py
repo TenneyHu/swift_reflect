@@ -16,7 +16,7 @@ class BenchmarkGame24(Benchmark):
         elif split == "two":
             self.data = data[:2]
         elif split == "mini":
-            self.data = data[:15]
+            self.data = data[:25]
         elif split == "mid":
             self.data = data[:50]
         elif split == "train":

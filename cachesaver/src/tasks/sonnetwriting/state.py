@@ -14,6 +14,8 @@ class StateSonnetWriting(State):
     target: str
 
     randomness: int
+    summary: str
+    reflections: List[str]
 
     def serialize(self) -> dict:
         """
@@ -25,6 +27,8 @@ class StateSonnetWriting(State):
             "steps": "->".join(self.steps),
             "target": self.target,
             "randomness": self.randomness,
+            "summary": self.summary,
+            "reflections": self.reflections,
         }
 
     def clone(self, randomness: int = None) -> "StateSonnetWriting":
@@ -37,6 +41,8 @@ class StateSonnetWriting(State):
             steps=self.steps,
             target=self.target,
             randomness=self.randomness,
+            summary=self.summary,
+            reflections=self.reflections,
         )
 
     def get_seed(self) -> int:

@@ -2,7 +2,8 @@ import random
 from typing import Tuple, Set, Dict, Any
 
 from .state import StateSonnetWriting
-from ...typedefs import Environment, MAX_SEED
+from ...typedefs import Environment, MAX_SEED, State
+from .prompts import summarize_reflections
 
 import re
 import joblib
@@ -16,52 +17,44 @@ class EnvironmentSonnetWriting(Environment):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @staticmethod
-    def step(state: StateSonnetWriting, action: str) -> StateSonnetWriting:
-        """
-        Takes a step in the environment based on the given action.
-        """
-        random.seed(state.randomness)
-        randomness = random.randint(0, MAX_SEED)
+    def step(self, state: State, action: str) -> State:
+        assert isinstance(state, StateSonnetWriting)
+        action = action.strip()
+        
+        new_state = state.clone()
+        new_state.steps.append(action)
 
-        state = StateSonnetWriting(
-            puzzle=state.puzzle,
-            current_state=action,
-            steps=state.steps + [action],
-            target=state.target,
-            randomness=randomness
-        )
-        return state
+        # Let's assume the final sonnet is the action itself
+        new_state.final_sonnet = action
+        new_state.reflections.append(action)
+        new_state.summary = summarize_reflections(new_state.reflections)
+        return new_state
 
-    @staticmethod
-    def is_valid(state: StateSonnetWriting, action: str) -> bool:
-        """
-        Checks if the action taken is valid.
-        """
-        raise NotImplementedError("is_valid have not been implemented yet.")
+    def is_final(self, state: State) -> bool:
+        assert isinstance(state, StateSonnetWriting)
+        # Simple check: if the sonnet has 14 lines, it's final.
+        return state.final_sonnet is not None and len(state.final_sonnet.split('\n')) >= 14
 
-    @staticmethod
-    def is_final(state: StateSonnetWriting) -> bool:
-        """
-        Checks if the current state is a final state.
-        """
-        raise NotImplementedError("is_final have not been implemented yet.")
-
-    @staticmethod
-    def evaluate(state: StateSonnetWriting) -> Tuple[bool | float]:
-        """
-        Evaluates the current state.
-        """
-        current_state = state.current_state
-        target = state.target
-
-        try:
-            errors = sonnet_errors(current_state, target)
-            if not errors:
-                return True, 1.0
-            return True, 0.0
-        except Exception as e:
+    def evaluate(self, state: State) -> tuple[bool, float]:
+        assert isinstance(state, StateSonnetWriting)
+        if not self.is_final(state):
             return False, 0.0
+
+        # Simplified evaluation.
+        # A real one would involve checking for iambic pentameter, rhyme scheme, etc.
+        sonnet = state.final_sonnet
+        score = 0.0
+        if sonnet:
+            lines = sonnet.strip().split('\n')
+            if len(lines) >= 14:
+                score += 0.5
+            
+            # Check for some thematic words from the puzzle
+            puzzle_words = state.puzzle.split()
+            if any(word in sonnet for word in puzzle_words):
+                score += 0.5
+        
+        return True, score
 
 
 

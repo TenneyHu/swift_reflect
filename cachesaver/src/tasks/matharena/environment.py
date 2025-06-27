@@ -2,6 +2,7 @@ from typing import Tuple, List
 from dataclasses import dataclass
 from ...typedefs import Environment, State
 from .state import StateMathArena
+import re
 
 @dataclass
 class EnvironmentMathArena(Environment):
@@ -12,35 +13,30 @@ class EnvironmentMathArena(Environment):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @staticmethod
-    def evaluate(state: StateMathArena) -> Tuple[bool, float]:
-        """
-        Evaluates the current state.
-
-        Args:
-            state (StateMathArena): Current state to evaluate
-
-        Returns:
-            Tuple[bool, float]: (is_finished, score)
-        """
-        # Check if we have any steps
-        if not state.steps:
-            return False, 0.0
-
-        last_step = state.steps[-1]
-
-        # Not finished if last step isn't a Finish action
-        if not last_step.startswith("Finish["):
-            return False, 0.0
-
-        # Extract and compare answer
-        predicted_answer = last_step[7:-1].strip()  # Remove "Finish[" and "]"
-        is_correct = predicted_answer == state.answer.strip()
+    def step(self, state: State, action: str) -> State:
+        assert isinstance(state, StateMathArena)
+        action = action.strip()
         
-        # Scoring logic: 
-        # - 1.0 for correct answer
-        # - 0.0 for incorrect answer
-        return True, float(is_correct)
+        new_state = state.clone()
+        new_state.steps.append(action)
+
+        match = re.search(r'final answer is (.*)', action.lower())
+        if match:
+            new_state.final_answer = match.group(1).strip()
+            
+        return new_state
+
+    def is_final(self, state: State) -> bool:
+        assert isinstance(state, StateMathArena)
+        return state.final_answer is not None
+
+    def evaluate(self, state: State) -> tuple[bool, float]:
+        assert isinstance(state, StateMathArena)
+        if state.final_answer is None:
+            return False, 0.0
+
+        is_correct = state.final_answer == state.answer
+        return is_correct, 1.0 if is_correct else 0.0
 
     @staticmethod
     def is_valid(state: StateMathArena) -> bool:
@@ -110,7 +106,3 @@ class EnvironmentMathArena(Environment):
         new_state = state.copy()
         new_state.steps.append(action)
         return new_state
-
-    def step(self, state: State, action: str) -> State:
-        action = action.strip()
-        # ... existing code ...

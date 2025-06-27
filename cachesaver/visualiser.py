@@ -51,7 +51,7 @@ def generate_distinct_hex_colors(n):
 
 def load_all_logs() -> Dict[str, str]:
     """
-    Loads the latest run from both log files for interactive analysis.
+    Loads all logs from both log files for interactive analysis.
     """
     log_contents = {}
     log_files = {
@@ -63,26 +63,30 @@ def load_all_logs() -> Dict[str, str]:
         try:
             with open(file_path, 'r') as f:
                 content = f.read()
-                # Find the last major separator and take everything after it
-                last_run = re.split(r'#{50,}', content)[-1].strip()
-                if last_run:
+                if content:
                     print(colored(f"Loading {file_path} for interactive analysis.", "cyan"))
-                    log_contents[name] = last_run
+                    log_contents[name] = content
         except FileNotFoundError:
             # This is not an error, one of the files might not exist yet
             pass
             
     return log_contents
 
-def get_task_and_puzzle_idx(log):
-    res = re.search(r"reflect_(?:summary|prevk)_logs-([^-]+)-(\d+)-", log)
-    assert res is not None, f'Task and puzzle index not found in log: {log}'
-    return res.group(1), int(res.group(2))
+def get_puzzle_idx(log):
+    res = re.search(r"reflect_(?:summary|prevk)_logs-(?:[a-zA-Z0-9_]+)-(\d+)-", log)
+    assert res is not None, f'Puzzle index not found in log: {log}'
+    return int(res.group(1))
 
-def get_task_puzzle_timestep(log):
-    res = re.search(r"reflect_(?:summary|prevk)_logs-([^-]+)-(\d+)-(\d+)", log)
-    assert res is not None, f'Task, puzzle index, or timestep not found in log: {log}'
-    return res.group(1), int(res.group(2)), int(res.group(3))
+def get_timestep(log):
+    res = re.search(r"reflect_(?:summary|prevk)_logs-(?:[a-zA-Z0-9_]+)-(\d+)-(\d+)", log)
+    assert res is not None, f'Timestep not found in log: {log}'
+    return int(res.group(2))
+
+def get_task_name_from_log(log: str) -> Optional[str]:
+    res = re.search(r"reflect_(?:summary|prevk)_logs-([a-zA-Z0-9_]+)-", log)
+    if res:
+        return res.group(1)
+    return None
 
 def get_py_list(string, type):
     l = eval(string)
@@ -120,7 +124,7 @@ def get_state_color(state_name: str):
     return state_colors[state_name]
 
 def get_states_from_log(log):
-    _, puzzle_idx = get_task_and_puzzle_idx(log)
+    index = get_puzzle_idx(log)
     isolated_list = log[log.find('['):]
     states_str = get_py_list(isolated_list, str)
     
@@ -133,7 +137,7 @@ def get_states_from_log(log):
 
     states_out = []
     for state_data in parsed_states:
-        s_name = state_name(state_data['current_state'], puzzle_idx)
+        s_name = state_name(state_data['current_state'], index)
         states_out.append(State(
             name=s_name,
             color=get_state_color(s_name),
@@ -186,8 +190,8 @@ def process_log_bundle(logs_str: str):
 
     logs = logs_str.split('\n')
     
-    fleet_dict = {}
-    puzzle_logs = []
+    tasks_log_data = {}
+
     log_prefix = ''
     if 'reflect_summary_logs' in logs_str:
         log_prefix = 'reflect_summary_logs'
@@ -196,37 +200,45 @@ def process_log_bundle(logs_str: str):
 
     for log in logs:
         if log_prefix in log:
-            if '-fleet:' in log:
-                task_name, _ = get_task_and_puzzle_idx(log)
-                if task_name not in fleet_dict:
-                    fleet_dict[task_name] = get_fleet(log)
-            else:
-                puzzle_logs.append(log)
+            task_name = get_task_name_from_log(log)
+            if task_name:
+                if task_name not in tasks_log_data:
+                    tasks_log_data[task_name] = {'fleet': [], 'puzzle_logs': []}
+                
+                if '-fleet:' in log:
+                    if len(tasks_log_data[task_name]['fleet']) == 0:
+                        tasks_log_data[task_name]['fleet'] = get_fleet(log)
+                else:
+                    tasks_log_data[task_name]['puzzle_logs'].append(log)
 
-    tasks_dict = {}
-    log_order = ['agentinputs', 'agentouts', 'statewins', 'statefails', 'reflections', 'summaries']
+    tasks_processed_data = {}
 
-    def get_log_type(log_line):
-        match = re.search(r'-([a-zA-Z]+):', log_line)
-        return match.group(1) if match else ""
+    for task_name, task_data in tasks_log_data.items():
+        state_names = {}
+        states_done_in_puzzle = {}
+        state_colors = {}
 
-    for log in puzzle_logs:
-        try:
-            task_name, puzzle_idx, timestep_idx = get_task_puzzle_timestep(log)
+        puzzles_dict = {}
+        log_order = ['agentinputs', 'agentouts', 'statewins', 'statefails', 'reflections', 'summaries']
 
-            if task_name not in tasks_dict:
-                tasks_dict[task_name] = {}
-            if puzzle_idx not in tasks_dict[task_name]:
-                tasks_dict[task_name][puzzle_idx] = {}
-            if timestep_idx not in tasks_dict[task_name][puzzle_idx]:
-                tasks_dict[task_name][puzzle_idx][timestep_idx] = []
-            
-            tasks_dict[task_name][puzzle_idx][timestep_idx].append(log)
-        except (AssertionError, IndexError):
-            pass
+        def get_log_type(log_line):
+            match = re.search(r'-([a-zA-Z]+):', log_line)
+            return match.group(1) if match else ""
 
-    tasks_data = {}
-    for task_name, puzzles_dict in tasks_dict.items():
+        for log in task_data['puzzle_logs']:
+            try:
+                puzzle_idx = get_puzzle_idx(log)
+                timestep_idx = get_timestep(log)
+
+                if puzzle_idx not in puzzles_dict:
+                    puzzles_dict[puzzle_idx] = {}
+                if timestep_idx not in puzzles_dict[puzzle_idx]:
+                    puzzles_dict[puzzle_idx][timestep_idx] = []
+                
+                puzzles_dict[puzzle_idx][timestep_idx].append(log)
+            except (AssertionError, IndexError):
+                pass
+
         graph: Dict[int, List[Timestep]] = {}
         flows = {}
         for puzzle_idx, timesteps_dict in puzzles_dict.items():
@@ -243,19 +255,17 @@ def process_log_bundle(logs_str: str):
                 timestep = get_timestep_object(sorted_logs_for_timestep, timestep_idx)
                 graph[puzzle_idx].append(timestep)
 
-        num_colors = len(state_colors)
-        colors = generate_distinct_hex_colors(num_colors)
-        random.shuffle(colors)
+            num_colors = len(state_colors)
+            colors = generate_distinct_hex_colors(num_colors)
+            random.shuffle(colors)
 
-        for k in state_colors:
-            state_colors[k] = colors.pop(0)
+            for k in state_colors:
+                state_colors[k] = colors.pop(0)
 
-        for puzzle_idx in graph:
             for timestep in graph[puzzle_idx]:
                 for state in timestep.input_states + timestep.agent_output_states:
                     state.color = get_state_color(state.name)
 
-        for puzzle_idx in graph:
             for timestep in graph[puzzle_idx]:
                 for i in range(len(timestep.agent_output_states)):
                     if i < len(timestep.state_wins) and timestep.state_wins[i]:
@@ -263,36 +273,37 @@ def process_log_bundle(logs_str: str):
                     elif i < len(timestep.state_fails) and timestep.state_fails[i]:
                         timestep.agent_output_states[i].terminal_data = 'Failed'
 
-        if task_name in fleet_dict and len(fleet_dict[task_name]) > 0:
-            fleet = fleet_dict[task_name]
-            for puzzle_idx in graph:
+            fleet = task_data['fleet']
+            if len(fleet) > 0:
                 flows[puzzle_idx] = [{
                     'agent_name': fleet[0],
                     'input_states': [t.input_states[i] for t in graph[puzzle_idx] if len(t.input_states) > i],
                     'output_states': [t.agent_output_states[i] for t in graph[puzzle_idx] if len(t.agent_output_states) > i],
                 } for i in range(1)]
         
-        tasks_data[task_name] = {
+        tasks_processed_data[task_name] = {
             'graph': graph,
             'flows': flows,
             'state_names': state_names,
         }
             
-    return tasks_data
+    return {
+        'tasks': tasks_processed_data
+    }
 
 def get_puzzle_statuses_from_file(log_path):
     try:
         with open(log_path, 'r') as f:
-            logs_content = re.split(r'#{50,}', f.read())[-1].strip()
+            logs_content = f.read()
         if not logs_content:
             return {}
     except FileNotFoundError:
         return {}
     
-    tasks_data = process_log_bundle(logs_content)
+    processed_data = process_log_bundle(logs_content)
     task_statuses = {}
-
-    for task_name, data in tasks_data.items():
+    
+    for task_name, data in processed_data['tasks'].items():
         graph = data['graph']
         statuses = {}
         for puzzle_idx, timesteps in graph.items():
@@ -301,7 +312,7 @@ def get_puzzle_statuses_from_file(log_path):
             else:
                 statuses[puzzle_idx] = 'Failed'
         task_statuses[task_name] = statuses
-    
+
     return task_statuses
 
 def draw_agent_diagram(agent_name: str, input_states: List[State], output_states: List[State], 
@@ -470,8 +481,8 @@ while True:
 
     if cmd == 'q':
         break
-    
-    if cmd == 'back':
+
+    if cmd == 'cd ..':
         if current_puzzle is not None:
             current_puzzle = None
         elif current_task is not None:
@@ -503,7 +514,7 @@ while True:
             break
         continue
     
-    tasks_data = log_data[current_context_name]
+    tasks = log_data[current_context_name]['tasks']
 
     if cmd == 'compare':
         statuses_summary = get_puzzle_statuses_from_file('logs/reflect_summary.log')
@@ -512,11 +523,11 @@ while True:
         all_task_names = sorted(list(set(statuses_summary.keys()) | set(statuses_prevk.keys())))
 
         for task_name in all_task_names:
-            print(f"\n--- Task: {task_name} ---")
+            print(colored(f"\nTask: {task_name}", "cyan", attrs=['bold']))
+            
             task_summary = statuses_summary.get(task_name, {})
             task_prevk = statuses_prevk.get(task_name, {})
-            
-            all_puzzle_ids = sorted(list(set(task_summary.keys()) | set(task_prevk.keys())))
+            all_puzzle_ids = sorted(list(set(task_summary.keys()) & set(task_prevk.keys())))
             
             print(f"{'Puzzle':<10}{'reflect_summary':<20}{'reflect_prevk':<20}")
             print(f"{'-'*8:<10}{'-'*15:<20}{'-'*15:<20}")
@@ -536,36 +547,37 @@ while True:
                 print(f"{puzzle_idx:<10}{status_summary_colored:<28}{status_prevk_colored:<28}")
         continue
 
-    if cmd.startswith('open '):
-        try:
-            if current_task is None:
-                task_name = cmd.split(' ')[1]
-                if task_name not in tasks_data:
-                    print(colored(f'Task {task_name} not found.', 'red'))
-                    continue
-                current_task = task_name
-                print(colored(f'Opened task {task_name}.', 'green'))
+    if cmd.startswith('cd '):
+        target = cmd.split(' ')[1]
+        if not current_task:
+            if target in tasks:
+                current_task = target
+                print(colored(f'Opened task {current_task}.', 'green'))
             else:
-                puzzle_idx = int(cmd.split(' ')[1])
-                if puzzle_idx not in tasks_data[current_task]['flows']:
-                    print(colored(f'Puzzle {puzzle_idx} not found in task {current_task}.', 'red'))
-                    continue
-                current_puzzle = puzzle_idx
-                print(colored(f'Opened puzzle {puzzle_idx}.', 'green'))
+                print(colored(f'Task {target} not found.', 'red'))
+            continue
+
+        try:
+            puzzle_idx = int(target)
+            if puzzle_idx not in tasks[current_task]['flows']:
+                print(colored(f'Puzzle {puzzle_idx} not found in task {current_task}.', 'red'))
+                continue
+            
+            current_puzzle = puzzle_idx
+            print(colored(f'Opened puzzle {puzzle_idx}.', 'green'))
         except (ValueError, IndexError):
-            print(colored('Invalid command. Use "open <task_name>" or "open <puzzle_idx>"', 'red'))
+            print(colored('Invalid command. Use "cd <puzzle_idx>"', 'red'))
         continue
 
     if cmd.startswith('img'):
-        if current_task is None:
-            print(colored('No task selected. Use "open <task_name>" to select a task.', 'red'))
-            continue
         if current_puzzle is None:
-            print(colored('No puzzle selected. Use "open <puzzle_idx>" to select a puzzle.', 'red'))
+            print(colored('No puzzle selected. Use "cd <puzzle_idx>" to select a puzzle.', 'red'))
+            continue
+        if not current_task:
+            print(colored('No task selected. Use "cd <task_name>" to select a task.', 'red'))
             continue
         
-        flows = tasks_data[current_task]['flows']
-        img = create_agent_diagrams(flows[current_puzzle])
+        img = create_agent_diagrams(tasks[current_task]['flows'][current_puzzle])
         
         os.makedirs(f'tmp/{current_context_name}/{current_task}', exist_ok=True)
         img_path = f'tmp/{current_context_name}/{current_task}/pic_{current_puzzle}.png'
@@ -574,35 +586,35 @@ while True:
         continue
 
     if cmd == 'ls':
-        if current_task is None:
-            print("Available tasks:")
-            for task_name in tasks_data:
-                print(f"- {task_name}")
-        else:
-            graph = tasks_data[current_task]['graph']
-            flows = tasks_data[current_task]['flows']
-            for puzzle_idx in flows:
-                print(f'Puzzle {puzzle_idx}: ', colored('Won', 'green') if any(graph[puzzle_idx][-1].state_wins) else colored('Failed', 'red'))
+        if not current_task:
+            print(colored("Available tasks:", "cyan"))
+            for task_name in tasks:
+                print(f'- {task_name}')
+            continue
+
+        graph = tasks[current_task]['graph']
+        for puzzle_idx in tasks[current_task]['flows']:
+            print(f'Puzzle {puzzle_idx}: ', colored('Won', 'green') if any(graph[puzzle_idx][-1].state_wins) else colored('Failed', 'red'))
         continue
 
-    res = re.search(f'^s(\d+.*$)', cmd)
+    res = re.search(r'^s(\d+.*$)', cmd)
     if res:
-        if current_task is None:
-            print(colored('No task selected. Use "open <task_name>" to select a task.', 'red'))
-            continue
         if current_puzzle is None:
-            print(colored('No puzzle selected. Use "open <puzzle_idx>" to select a puzzle.', 'red'))
+            print(colored('No puzzle selected. Use "cd <puzzle_idx>" to select a puzzle.', 'red'))
+            continue
+        if not current_task:
+            print(colored('No task selected. Use "cd <task_name>" to select a task.', 'red'))
             continue
         
         cmd_parts = res.group(1).split('.')
         state_id = "s" + cmd_parts[0]
 
-        state_names_map = tasks_data[current_task]['state_names']
+        state_names_map = tasks[current_task]['state_names']
         if state_id not in state_names_map.values():
             print(colored(f'State {state_id} not found.', 'red'))
             continue
 
-        graph = tasks_data[current_task]['graph']
+        graph = tasks[current_task]['graph']
         found_state = None
         for timestep in reversed(graph[current_puzzle]):
             for s in timestep.agent_output_states + timestep.input_states:

@@ -68,9 +68,7 @@ class State(ABC):
 
     
 class Environment(ABC):
-    name: str
-
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         pass
 
     @staticmethod

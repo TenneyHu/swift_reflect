@@ -46,6 +46,10 @@ class AlgorithmReflectSummary(Algorithm):
         self.origin = origin
         self.min_steps = min_steps
         self.num_evaluations = num_evaluations
+        if isinstance(env, type):
+            self.task_name = env.__module__.split('.')[-2]
+        else:
+            self.task_name = env.__class__.__module__.split('.')[-2]
         
         log_file = 'logs/reflect_summary.log'
         if logger.hasHandlers():
@@ -64,12 +68,12 @@ class AlgorithmReflectSummary(Algorithm):
         state = state.clone(randomness=random.randint(0, MAX_SEED))
         
 
-        logger.info(f'reflect_summary_logs-{self.env.name}-{idx}-fleet: {log_agents([{"agent": self.step_agent, "params": self.step_params, "num_agents": 1}])}')
+        logger.info(f'reflect_summary_logs-{self.task_name}-{idx}-fleet: {log_agents([{"agent": self.step_agent, "params": self.step_params, "num_agents": 1}])}')
         
         for step in range(self.num_steps):
             print(f"Step {step} ({idx})")
             
-            logger.info(f"reflect_summary_logs-{self.env.name}-{idx}-{step}-agentinputs: {log_states([state])}")
+            logger.info(f"reflect_summary_logs-{self.task_name}-{idx}-{step}-agentinputs: {log_states([state])}")
             
             # The agent returns a list of states.
             new_states = await self.step_agent.act(
@@ -86,10 +90,10 @@ class AlgorithmReflectSummary(Algorithm):
                 break
             state = new_states[0]
             
-            logger.info(f"reflect_summary_logs-{self.env.name}-{idx}-{step}-agentouts: {log_states(new_states)}")
-            logger.info(f"reflect_summary_logs-{self.env.name}-{idx}-{step}-statewins: {[self.env.evaluate(s)[1] == 1 for s in new_states]}")
-            logger.info(f"reflect_summary_logs-{self.env.name}-{idx}-{step}-statefails: {[self.env.is_final(s) for s in new_states]}")
-            logger.info(f"reflect_summary_logs-{self.env.name}-{idx}-{step}-summaries: {[s.reflections for s in new_states]}")
+            logger.info(f"reflect_summary_logs-{self.task_name}-{idx}-{step}-agentouts: {log_states(new_states)}")
+            logger.info(f"reflect_summary_logs-{self.task_name}-{idx}-{step}-statewins: {[self.env.evaluate(s)[1] == 1 for s in new_states]}")
+            logger.info(f"reflect_summary_logs-{self.task_name}-{idx}-{step}-statefails: {[self.env.is_final(s) for s in new_states]}")
+            logger.info(f"reflect_summary_logs-{self.task_name}-{idx}-{step}-summaries: {[s.reflections for s in new_states]}")
             
             if self.env.evaluate(state)[1] == 1:
                 break

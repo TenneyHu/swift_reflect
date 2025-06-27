@@ -1,39 +1,30 @@
 from gc import is_finalized
 import random
 from typing import Tuple
+import re
 
+from ...typedefs import State, Environment
 from .state import StateLogiQA
-from ...typedefs import Environment, MAX_SEED
-from ....typedefs import State
+from ...typedefs import MAX_SEED
 
 class EnvironmentLogiQA(Environment):
     name = 'logiqa'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @staticmethod
-    def step(state: StateLogiQA, action: str) -> StateLogiQA:
-        """
-        Takes a step in the environment based on the given action.
-        """
-        action_taken = get_answer(action)
+    def step(self, state: State, action: str) -> State:
+        assert isinstance(state, StateLogiQA)
+        action = action.strip()
+        
+        new_state = state.clone()
+        new_state.steps.append(action)
 
-        random.seed(state.randomness)
-        randomness = random.randint(0, MAX_SEED)
-
-        state = StateLogiQA(
-            context=state.context,
-            question=state.question,
-            option_a=state.option_a,
-            option_b=state.option_b,
-            option_c=state.option_c,
-            option_d=state.option_d,
-            current_state=action_taken,
-            steps=state.steps + [action_taken],
-            correct_option=state.correct_option,
-            randomness=randomness
-        )
-        return state
+        # Extract final answer if present
+        match = re.search(r'answer is \((\w)\)', action.lower())
+        if match:
+            new_state.final_answer = match.group(1).upper()
+            
+        return new_state
     
 
     @staticmethod
@@ -43,29 +34,17 @@ class EnvironmentLogiQA(Environment):
         """
         raise NotImplementedError("Action validation logic is not implemented yet.")
     
-    @staticmethod
-    def is_final(state: StateLogiQA) -> bool:
-        """
-        Checks if the current state is a final state.
-        """
-        current_state = get_answer(state.current_state)
-
-        return current_state in "abcd"
+    def is_final(self, state: State) -> bool:
+        assert isinstance(state, StateLogiQA)
+        return state.final_answer is not None
     
-    @staticmethod
-    def evaluate(state: StateLogiQA) -> Tuple[bool | float]:
-        """
-        Evaluates the current state.
-        """
-        if EnvironmentLogiQA().is_final(state):
-            answer = state.current_state.strip().lower()
-            correct_answer = state.correct_option.strip().lower()
-            if answer == correct_answer:
-                return True, 1.0
-            else:
-                return True, 0.0
-        else:
+    def evaluate(self, state: State) -> tuple[bool, float]:
+        assert isinstance(state, StateLogiQA)
+        if state.final_answer is None:
             return False, 0.0
+
+        is_correct = state.final_answer == state.answer
+        return is_correct, 1.0 if is_correct else 0.0
 
 
 # ---Helper functions---

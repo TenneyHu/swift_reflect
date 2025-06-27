@@ -39,7 +39,7 @@ rap:
   exploration_constant: 1.0
 
 reflect_summary:
-  num_steps: 15
+  num_steps: 20
   origin: 10
   min_steps: 1
   num_evaluations: 3

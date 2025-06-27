@@ -673,7 +673,7 @@ class AgentReflectPrevKSciBench(StateReturningAgent):
             new_reflections = [gathered_thoughts[thought_idx]] + s_being_reflected.reflections
             
             states[list_idx] = replace(s_being_reflected, 
-                                       reflections=new_reflections[:k])
+                                       reflections=new_reflections[:k-1])
             thought_idx += 1
 
         return states

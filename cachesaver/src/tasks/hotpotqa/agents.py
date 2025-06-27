@@ -596,7 +596,7 @@ class AgentReflectSummaryHotpotQA(StateReturningAgent):
         if state.summary:
             print(f"Using summary: {state.summary}")
             print(len(state.reflections))
-            prompt_template = prompts.react_with_reflect
+            prompt_template = prompts.act_with_reflect
             current_prompt = prompt_template.format(
                 reflections_header=prompts.REFLECTION_SUMMARY_HEADER,
                 reflections=state.summary,
@@ -605,7 +605,7 @@ class AgentReflectSummaryHotpotQA(StateReturningAgent):
                 current_state=state.current_state
             )
         else:
-            prompt_template = prompts.react
+            prompt_template = prompts.act
             current_prompt = prompt_template.format(
                 examples=examples, question=state.puzzle, current_state=state.current_state
             )
@@ -748,7 +748,7 @@ class AgentReflectPrevKHotpotQA(StateReturningAgent):
                 answer=state.answer,
                 docstore=state.docstore,
                 randomness=state.randomness,
-                reflections=[thoughts.pop(0)] + state.reflections[:k], # Only keep last k reflections
+                reflections=[thoughts.pop(0)] + state.reflections[:k-1], # Only keep last k reflections
                 parent=state,
                 summary=state.summary,
             )

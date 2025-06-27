@@ -27,7 +27,7 @@ class BenchmarkSonnetWriting(Benchmark):
         valid_idxs = set(range(len(data)))
 
         random.seed(0)
-        mini_set_idxs = random.sample(list(valid_idxs), 10)
+        mini_set_idxs = random.sample(list(valid_idxs), 25)
         valid_idxs = valid_idxs - set(mini_set_idxs)
 
         train_set_idxs = random.sample(list(valid_idxs), 50)
@@ -79,6 +79,8 @@ class BenchmarkSonnetWriting(Benchmark):
             current_state=input,
             steps=[],
             target=target,
-            randomness=None
+            randomness=None,
+            reflections=[],
+            summary=""
         )
         return index, state

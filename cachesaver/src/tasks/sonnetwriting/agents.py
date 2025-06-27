@@ -250,3 +250,60 @@ class AgentSelfEvaluateSonnetWriting(Agent):
         if cache is not None:
             cache[state.current_state] = value
         return value
+
+class AgentReflectSonnetWriting(Agent):
+    @staticmethod
+    async def act(
+        model: Model,
+        state: StateSonnetWriting,
+        n: int,
+        namespace: str,
+        request_id: str,
+        params: DecodingParameters,
+    ) -> List[str]:
+        num_examples = min(2, len(prompts.examples_reflect))
+        examples_str = "(Example Reflection)\n" + "\n\n(Example Reflection)\n".join(
+        [example for example in prompts.examples_reflect[:num_examples]]
+        )
+        
+        scratchpad = state.current_state
+
+        prompt = prompts.reflect.format(
+            examples=examples_str,
+            question=state.puzzle,
+            scratchpad=scratchpad
+        )
+        
+        responses = await model.request(
+            prompt=prompt,
+            n=1, 
+            request_id=request_id,
+            namespace=namespace,
+            params=params,
+        )
+        
+        reflection_text = responses[0].strip()
+        return reflection_text
+    
+    
+class AgentReflectSummarySonnetWriting(Agent):
+    @staticmethod
+    async def act(
+        model: Model,
+        state: StateSonnetWriting,
+        n: int,
+        namespace: str,
+        request_id: str,
+        params: DecodingParameters,
+    ) -> List[str]:
+        if state.summary:
+            print(f"Using summary: {state.summary}")
+            print(len(state.reflections))
+            prompt_template = prompts.act_with_reflect
+            current_prompt = prompt_template.format(
+                reflections_header=prompts.REFLECTION_SUMMARY_HEADER,
+                reflections=state.summary,
+                examples=examples,
+                question=state.puzzle,
+                current_state=state.current_state
+            )

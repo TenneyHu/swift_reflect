@@ -23,7 +23,7 @@ class BenchmarkSciBench(Benchmark):
         single_instance = data.pop(0)
         total = len(data)
         # mini = round(total * 0.05)
-        mini = 30
+        mini = 25
         train = round(total * 0.10)
         valid = round(total * 0.15)
         

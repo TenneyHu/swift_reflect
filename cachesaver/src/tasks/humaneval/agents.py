@@ -648,7 +648,7 @@ class AgentReflectPrevKHumanEval(StateReturningAgent):
         for i in reflected_idxs:
             s_reflections = list(states[i].reflections)
             s_reflections.insert(0, thoughts.pop(0))
-            states[i] = replace(states[i], reflections=s_reflections[:k])  # Only keep last k reflections
+            states[i] = replace(states[i], reflections=s_reflections[:k-1])  # Only keep last k reflections
 
         return states
         
