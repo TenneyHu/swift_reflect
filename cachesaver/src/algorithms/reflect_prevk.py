@@ -5,126 +5,121 @@ import asyncio
 from typing import TypedDict
 from ..typedefs import Algorithm, Model, Agent, Environment, DecodingParameters, State, Benchmark, MAX_SEED, StateReturningAgent
 from ..utils import Resampler, log_states, log_agents
-logger = logging.getLogger('reflect_prevk_logger')
-logger.setLevel(logging.INFO)
-# handler = logging.FileHandler('logs/reflect_prevk_logs.log')
-# handler.setLevel(logging.INFO)
-# logger.addHandler(handler)
-
+from ..tasks.hotpotqa.state import StateHotpotQA
+logger = logging.getLogger(__name__)
 
 class AgentDictReflectPrevK(TypedDict):
-    step: Agent
-    evaluate: Agent
-    step_params: DecodingParameters
-    eval_params: DecodingParameters
-    
-def wrap_agent_in_env(agent_class, env):
-    class WrappedAgent(agent_class, StateReturningAgent):
-        @staticmethod
-        async def act(model: Model, state: State, n: int, namespace: str, request_id: str, params: DecodingParameters):
-            actions = await agent_class.act(model=model, state=state, n=n, namespace=namespace, request_id=request_id, params=params)
-            new_states = [env.step(state, action) for action in actions]
-            return new_states
-
+    react_agent: Agent  # The agent that attempts to solve, e.g., AgentReactHotpotQA
+    reflect_agent: Agent # The agent that generates reflections, e.g., AgentReflectHotpotQA
+    # Optional: evaluate_agent for intermediate checks, but Reflexion often checks env.evaluate
+    react_params: DecodingParameters
+    reflect_params: DecodingParameters
 
 class AlgorithmReflectPrevK(Algorithm):
     def __init__(self,
                  model: Model,
                  agents: AgentDictReflectPrevK,
                  env: Environment,
-                 num_steps: int,
-                 origin: float,
-                 min_steps:int,
-                 num_evaluations: int,
-                 k: int,
-                 ):
+                 num_trials: int,         # Max number of attempts (trials)
+                 max_steps_per_trial: int, # Max steps within each attempt
+                 k: int                     
+                ):
         super().__init__(model, agents, env)
-        
-        self.step_agent = agents["step"]
-        self.eval_agent = agents["evaluate"]
-        
-        self.step_params = agents["step_params"]
-        self.eval_params = agents["eval_params"]
-        
-        self.num_steps = num_steps
-        self.origin = origin
-        self.min_steps = min_steps
-        self.num_evaluations = num_evaluations
+
+        self.react_agent = agents["react_agent"]
+        self.reflect_agent = agents["reflect_agent"]
+        self.react_params = agents["react_params"]
+        self.reflect_params = agents["reflect_params"]
+
+        self.num_trials = num_trials
         self.k = k
-        if isinstance(env, type):
-            self.task_name = env.__module__.split('.')[-2]
-        else:
-            self.task_name = env.__class__.__module__.split('.')[-2]
-        
-        log_file = 'logs/reflect_prevk.log'
-        if logger.hasHandlers():
-            logger.handlers.clear()
+        self.max_steps_per_trial = max_steps_per_trial
 
-        os.makedirs(os.path.dirname(log_file), exist_ok=True)
-        handler = logging.FileHandler(log_file)
-        handler.setLevel(logging.INFO)
-        logger.addHandler(handler)
+    async def solve(self, idx: int, initial_state: StateHotpotQA, trial: int, max_trial: int, namespace: str, value_cache: dict = None):
+        """
+        Attempts to solve the puzzle over a number of trials, using reflections.
+        value_cache is not directly used by this specific Reflexion loop logic,
+        but kept for consistency if agents use it.
+        """
+        is_final, reward = self.env.evaluate(initial_state)
+        if is_final:
+            if reward == 1.0:
+                logger.info(f"Task {idx} Already solved.")
+                return (idx, initial_state)
 
-        logger.info(50*'#')
+        trial_state: StateHotpotQA = initial_state.clone(
+            randomness=random.randint(0, MAX_SEED),
+            reset_trajectory=True,  # Reset steps for new trial
+            new_trials=initial_state.trials + 1 if initial_state.trials is not None else 1
+        )
 
-    async def solve(self, idx: int, state: State, namespace: str, value_cache: dict = None):
-        randomness = idx
-        random.seed(randomness)
-        state = state.clone(randomness=random.randint(0, MAX_SEED))
-        
-        logger.info(f'reflect_prevk_logs-{self.task_name}-{idx}-fleet: {log_agents([{"agent": self.step_agent, "params": self.step_params, "num_agents": 1}])}')
-        
-        print('initial problem state:')
-        print(state.puzzle)
-        
-        solved = False
-        
-        for step in range(self.num_steps):
-            print(f"Step {step} ({idx})")
-            
-            if solved:
-                print(f"Problem ({idx}) solved at step {step}")
-                break
+        for step in range(self.max_steps_per_trial):
+            logger.info(f"  Step {step + 1}/{self.max_steps_per_trial} (Task {idx}, Trial {trial}/{max_trial})")
                 
-            logger.info(f"reflect_prevk_logs-{self.task_name}-{idx}-{step}-agentinputs: {log_states([state])}")
-            
-            # The agent returns a list of states.
-            new_states = await self.step_agent.act(
+            action_list = await self.react_agent.act(
                 model=self.model,
-                state=state,
-                n=1,
+                state=trial_state,
+                n=1, 
                 namespace=namespace,
-                k=self.k,
-                request_id=f"idx{idx}-step{step}-{hash(state)}",
-                params=self.step_params
+                request_id=f"idx{idx}-trial{trial}-step{step}-{hash(trial_state)}",
+                params=self.react_params
+            )
+                
+            if not action_list:
+                logger.warning(f"Task {idx}, Trial {trial}, Step {step}: React agent returned no action.")
+                break # End current trial step if no action
+
+            action = action_list[0]
+                
+            # Execute the action
+            trial_state = self.env.step(trial_state, action)
+                
+            # Check for solution
+            is_final, reward = self.env.evaluate(trial_state)
+            if is_final:
+                if reward == 1.0:
+                    logger.info(f"Task {idx}, Trial {trial}: Solved successfully.")
+                    return (idx, trial_state) 
+                else:
+                    logger.info(f"Task {idx}, Trial {trial}: Reached Finish action, but incorrect.")
+                    break 
+            
+        if trial < max_trial:
+            reflection_text = await self.reflect_agent.act(
+                model=self.model,
+                state=trial_state, # Pass the state that includes the failed trajectory
+                namespace=namespace,
+                request_id=f"idx{idx}-trial{trial}-reflect-{hash(trial_state)}",
+                params=self.reflect_params
             )
             
-            if not new_states:
-                logger.warning(f"Agent returned no new states for index {idx}, step {step}. Stopping.")
-                break
-            state = new_states[0]
-            
-            logger.info(f"reflect_prevk_logs-{self.task_name}-{idx}-{step}-agentouts: {log_states(new_states)}")
-            logger.info(f"reflect_prevk_logs-{self.task_name}-{idx}-{step}-statewins: {[self.env.evaluate(s)[1] == 1 for s in new_states]}")
-            logger.info(f"reflect_prevk_logs-{self.task_name}-{idx}-{step}-statefails: {[self.env.is_final(s) for s in new_states]}")
-            logger.info(f"reflect_prevk_logs-{self.task_name}-{idx}-{step}-reflections: {[len(s.reflections) for s in new_states]}")
-            
-            if self.env.evaluate(state)[1] == 1:
-                solved = True
-                print(f"Problem ({idx}) solved at step {step}")
-                break
-        return [state]
-    
-    async def benchmark(self, benchmark: Benchmark, share_ns: bool=False, cache: bool=True):
-        solve_coroutines = [
-            self.solve(
-                idx=index,
-                state=state,
-                namespace="benchmark" if share_ns else f"benchmark-{index}",
-                value_cache=None
+            trial_state = trial_state.clone(new_reflection=reflection_text, prev_k=self.k)
+            logger.info(f"Task {idx}, Trial {trial  }: New Reflection: {reflection_text}, length of reflections: {len(trial_state.reflections)}")
+        else:
+            logger.info(f"Task {idx}: All {self.num_trials} trials completed. Puzzle not solved.")
+  
+        return (idx, trial_state)
+       
+
+    async def benchmark(self, benchmark: Benchmark, trial: int, max_trial: int, share_ns: bool = False, cache: bool = True):
+        # `cache` here refers to the value_cache for evaluators, not used directly by solve's loop
+        # but passed down in case agents use it.
+        value_cache_instance = {} if cache else None
+        
+        solve_coroutines = []
+        for index, state in benchmark:
+
+            solve_coroutines.append(
+                self.solve(
+                    idx=index,
+                    initial_state=state, # Pass the initial state from the benchmark
+                    trial=trial,
+                    max_trial=max_trial,
+                    namespace="benchmark" if share_ns else f"benchmark-{index}",
+                    value_cache=value_cache_instance # Pass the cache if agents need it
+                )
             )
-            for index, state in benchmark
-        ]
+        
         results = await asyncio.gather(*solve_coroutines)
+        # `results` will be a list of lists of states. Typically, each inner list will have one state.
         return results
-    

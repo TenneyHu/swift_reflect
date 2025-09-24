@@ -92,6 +92,7 @@ class BenchmarkHotpotQA(Benchmark):
             puzzle=x,
             current_state="",
             steps=[],
+            trials=0,
             answer=y,
             docstore=DocstoreExplorer(Wikipedia()),
             randomness=None,

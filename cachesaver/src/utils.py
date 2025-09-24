@@ -202,7 +202,7 @@ def log_states(states) -> str:
     states is a list of states
     '''
     
-    return str([log_state(s) for s in states])
+    return '\n'.join([log_state(s) for s in states])
 
 
 def log_agents(step_agents):

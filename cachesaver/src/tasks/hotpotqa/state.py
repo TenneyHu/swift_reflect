@@ -28,6 +28,9 @@ class StateHotpotQA(State):
     # A summary of the all reflections over previous trials
     summary: str
 
+    #trials to solve the puzzle
+    trials: int
+
     # A list to store all reflections made during the process
     reflections: List[str] = field(default_factory=list)
 
@@ -51,16 +54,25 @@ class StateHotpotQA(State):
             "answer": self.answer,
             "summary": self.summary,
         }
-    
-    def clone(self, randomness: int = None, new_reflection: Optional[str] = None, reset_reflections: bool = False, reset_trajectory: bool = False) -> "StateHotpotQA":
+
+    def clone(self, randomness: int = None, new_trials: int = None, new_reflection: Optional[str] = None, set_summary: Optional[str] = None,
+              prev_k: int = 0, reset_reflections: bool = False, reset_trajectory: bool = False) -> "StateHotpotQA":
         """
         Returns a new instance of StateHotpotQA with an optional new randomness value,
         updated reflections, and optionally reset current_state and steps.
         """
         current_reflections = [] if reset_reflections else list(self.reflections)
         if new_reflection:
-            current_reflections.append(new_reflection)
+            if prev_k > 0 and len(current_reflections) >= prev_k:
+                current_reflections = [new_reflection] + current_reflections[:prev_k-1]
+            else:
+                current_reflections.append(new_reflection)
         
+        if set_summary is not None:
+            new_summary = set_summary
+        else:
+            new_summary = self.summary 
+
         new_current_state = "" if reset_trajectory else self.current_state
         new_steps = [] if reset_trajectory else list(self.steps)
 
@@ -68,13 +80,14 @@ class StateHotpotQA(State):
             puzzle=self.puzzle,
             current_state=new_current_state,
             steps=new_steps,
+            trials=new_trials if new_trials is not None else self.trials,
             answer=self.answer,
             docstore=self.docstore,
             randomness=randomness or self.randomness,
             reflections=current_reflections,
             value=self.value,
             parent=self.parent,
-            summary=self.summary
+            summary=new_summary
         )
 
     def get_seed(self) -> int:

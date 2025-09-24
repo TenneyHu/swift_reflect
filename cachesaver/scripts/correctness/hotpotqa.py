@@ -25,160 +25,52 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def build_method(method_name: str, params: DecodingParameters, api: API, config: OmegaConf):
+def build_method(method_name: str, args, params: DecodingParameters, api: API, config: OmegaConf):
 # Setup the method
-    if method_name == "het_foa":
-        step_agents = []
-
-        # build the fleet of agents here
-        step_agents.append({
-            "agent": AgentValueReduceReflectHotpotQA,
-            "params": params,
-            "num_agents": config.het_foa.num_agents - config.het_foa.num_agents // 2,
-        })
-
-        step_agents.append({
-            "agent": AgentReactHotpotQA,
-            "params": params,
-            "num_agents": config.het_foa.num_agents // 2,
-        })
-
-        agents = AgentDictHeterogenousFOA(
-            evaluate=AgentEvaluateHotpotQA,
-            eval_params=params,
-            step_agents=step_agents
-        )
-
-        logger.info(f"Using these agents for Heterogenous FOA:")
-        for i in range(len(agents["step_agents"])):
-            logger.info(f"{step_agents[i]['agent'].__name__} ({agents['step_agents'][i]['num_agents']}): Temperature: {agents['step_agents'][i]['params'].temperature}, Top P: {agents['step_agents'][i]['params'].top_p}")
-
-
-        method = AlgorithmHeterogenousFOA(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_agents=config.het_foa.num_agents,
-            num_steps=config.het_foa.num_steps,
-            k=config.het_foa.k,
-            backtrack=config.het_foa.backtrack,
-            resampling=config.het_foa.resampling,
-            origin=config.het_foa.origin,
-            min_steps=config.het_foa.min_steps,
-            num_evaluations=config.het_foa.num_evaluations,
-        )
-    elif method_name == "foa":
-        agents = AgentDictFOA(
-            step=AgentActHotpotQA,
-            evaluate=AgentEvaluateHotpotQA,
-            step_params=params,
-            eval_params=params,
-        )
-        method = AlgorithmFOA(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_agents=config.foa.num_agents,
-            num_steps=config.foa.num_steps,
-            k=config.foa.k,
-            backtrack=config.foa.backtrack,
-            resampling=config.foa.resampling,
-            origin=config.foa.origin,
-            min_steps=config.foa.min_steps,
-            num_evaluations=config.foa.num_evaluations,
-        )
-    elif method_name == "tot_bfs":
-        agents = AgentDictTOT(
-            step=AgentBfsHotpotQA,
-            evaluate=AgentEvaluateHotpotQA,
-            step_params=params,
-            eval_params=params,
-        )
-        method = AlgorithmTOT(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_selections=config.tot_bfs.num_selections,
-            num_steps=config.tot_bfs.num_steps,
-            num_evaluations=config.tot_bfs.num_evaluations,
-        )
-    elif method_name == "got":
-        agents = AgentDictGOT(
-            step=AgentBfsHotpotQA,
-            aggregate=AgentAggregateHotpotQA,
-            evaluate=AgentEvaluateHotpotQA,
-            step_params=params,
-            aggregate_params=params,
-            eval_params=params,
-        )
-        method = AlgorithmGOT(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_selections=config.got.num_selections,
-            num_steps=config.got.num_steps,
-            num_best=config.got.num_best,
-            num_evaluations=config.got.num_evaluations,
-        )
-    elif method_name == "rap":
-        agents = AgentDictRAP(
-            step=AgentReactHotpotQA,
-            evaluate=AgentSelfEvaluateHotpotQA,
-            step_params=params,
-            eval_params=params,
-        )
-        method = AlgorithmRAP(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_iterations=config.rap.num_iterations,
-            num_samples=config.rap.num_samples,
-            num_evaluations=config.rap.num_evaluations,
-            exploration_constant=config.rap.exploration_constant,
-        )
-    elif method_name == "react":
-        agents = AgentDictReact(
-            step=AgentReactHotpotQA,
-            step_params=params,
-        )
-        method = AlgorithmReact(
-            model=api,
-            agents=agents,
-            env=EnvironmentHotpotQA,
-            num_steps=config.react.num_steps,
-        )
-    # New method for summarizing reflections
-    elif method_name == "reflect_summary":
+    
+    if method_name == "reflect_summary":
         agents = AgentDictReflectSummary(
-            step=AgentReflectSummaryHotpotQA,
-            evaluate=AgentEvaluateHotpotQA,
-            step_params=params,
-            eval_params=params,
+            react_agent=AgentReactHotpotQA,
+            reflect_agent=AgentReflectHotpotQA,
+            summary_agent=AgentSummaryHotpotQA,
+            react_params=params,
+            reflect_params=params,
+            summary_params=params,
         )
         method = AlgorithmReflectSummary(
             model=api,
             agents=agents,
             env=EnvironmentHotpotQA,
-            num_steps=config.reflect_summary.num_steps,
-            origin=config.reflect_summary.origin,
-            min_steps=config.reflect_summary.min_steps,
-            num_evaluations=config.reflect_summary.num_evaluations,
+            num_trials=args.trials,
+            max_steps_per_trial=config.reflect_summary.max_steps_per_trial,
+        )
+    elif method_name == "reflexion_react":
+        agents = AgentDictReflexionReact(
+            react_agent=AgentReactHotpotQA,
+            reflect_agent=AgentReflectHotpotQA,
+            react_params=params,
+            reflect_params=params,
+        )
+        method = AlgorithmReflexionReact(
+            model=api,
+            agents=agents,
+            env=EnvironmentHotpotQA,
+            num_trials=args.trials,
+            max_steps_per_trial=config.reflexion_react.max_steps_per_trial,
         )
     elif method_name == "reflect_prev_k":
         agents = AgentDictReflectPrevK(
-            step=AgentReflectPrevKHotpotQA,
-            evaluate=AgentEvaluateHotpotQA,
-            step_params=params,
-            eval_params=params,
+            react_agent=AgentReactHotpotQA,
+            reflect_agent=AgentReflectHotpotQA,
+            react_params=params,
+            reflect_params=params,
         )
         method = AlgorithmReflectPrevK(
             model=api,
             agents=agents,
             env=EnvironmentHotpotQA,
-            num_steps=config.reflect_prev_k.num_steps,
-            origin=config.reflect_prev_k.origin,
-            min_steps=config.reflect_prev_k.min_steps,
-            num_evaluations=config.reflect_prev_k.num_evaluations,
+            num_trials=args.trials,
+            max_steps_per_trial=config.reflect_prev_k.max_steps_per_trial,
             k=config.reflect_prev_k.k,
         )
 
@@ -186,7 +78,7 @@ def build_method(method_name: str, params: DecodingParameters, api: API, config:
         raise NotImplementedError(f"Method {method_name} is not implemented yet.")
     return method
 
-async def run(args, trial, cache_path):
+async def run(args, cache_path):
     # Cache to be used
     os.makedirs(os.path.dirname(cache_path), exist_ok=True)
     cache = Cache(cache_path)
@@ -236,61 +128,42 @@ async def run(args, trial, cache_path):
     config = OmegaConf.load(args.conf_path)
 
     # Build the method
-    method = build_method(args.method, params, api, config)
+    method = build_method(args.method, args, params, api, config)
 
     # Load the dataset
-    benchmark = BenchmarkHotpotQA(path=args.dataset_path, split=args.split)
+    current_state = BenchmarkHotpotQA(path=args.dataset_path, split=args.split)
 
-    # Run the method
-    start = time.time()
-    results = await method.benchmark(
-        benchmark=benchmark,
-        share_ns=True,
-        cache=args.value_cache,
-    )
-    end = time.time()
+    for trial in range(1, args.trials + 1):
 
-    finished = []
-    correct = []
-    for result in results:
-        evaluations = sorted([EnvironmentHotpotQA.evaluate(state) for state in result], key=lambda x: x[1])
-        finished.append(False if len(evaluations) == 0 else evaluations[-1][0])
-        correct.append(1.0 if len(evaluations) == 0 else evaluations[-1][1])
-    perc_finished = sum(finished) / len(finished)
-    perc_correct = sum(correct) / len(correct)
-    costs = {key:tokens2cost(api.tokens[key], args.model)["total"] for key in api.tokens.keys()}
-    latency = {
-        "mean": np.mean(api.latencies), 
-        "std": np.std(api.latencies),
-        "max": np.max(api.latencies), 
-        "min": np.min(api.latencies), 
-        "total": np.sum(api.latencies)
-        }
-    reuse = {
-        "mean": np.mean(list(api.reuse.values())),
-        "std": np.std(list(api.reuse.values())),
-        "max": np.max(list(api.reuse.values())),
-        "min": np.min(list(api.reuse.values())),
-        "median": np.median(list(api.reuse.values())),
-    }
-    run_time = end - start
-    throughput = len(benchmark) / run_time
+        start = time.time()
+        results = await method.benchmark(
+            benchmark=current_state,
+            share_ns=True,
+            trial=trial,
+            max_trial=args.trials,
+            cache=args.value_cache,
+        )
+        end = time.time()
+        current_state = results
+        finished = []
+        correct = []
+        for _, result in results:
+            evaluations = EnvironmentHotpotQA.evaluate(result)
+            finished.append(False if len(evaluations) == 0 else evaluations[0])
+            correct.append(1.0 if len(evaluations) == 0 else evaluations[1])
 
-    logger.info(f"Finished: {perc_finished:.2f} (trial {trial})")
-    logger.info(f"Correct: {perc_correct:.2f} (trial {trial})")
-    logger.info(f"Costs: {costs} (trial {trial})")
-    logger.info(f"Latency: {latency['mean']} (trial {trial})")
-    logger.info(f"Run time: {run_time:.2f} seconds (trial {trial})")
-    logger.info(f"Throughput: {throughput:.2f} puzzles/second (trial {trial})")
-
-    logger.info(f"Correct (deailed): {correct} (trial {trial})")
-    logger.info(f"Tokens (detailed): {api.tokens} (trial {trial})")
-    logger.info(f"Calls (detailed): {api.calls} (trial {trial})")
-    logger.info(f"Reuse (detailed): {reuse} (trial {trial})")
-    
-    print("All good.")
+        perc_finished = sum(finished) / len(finished)
+        perc_correct = sum(correct) / len(correct)
+        costs = {key:tokens2cost(api.tokens[key], args.model)["total"] for key in api.tokens.keys()}
+        run_time = end - start
 
 
+        logger.info(f"Finished: {perc_finished:.2f} (trial {trial})")
+        logger.info(f"Correct: {perc_correct:.2f} (trial {trial})")
+        logger.info(f"Costs: {costs} (trial {trial})")
+        logger.info(f"Correct (detailed): {correct} (trial {trial})")
+        #logger.info(f"Run time: {run_time:.2f} seconds (trial {trial})")
+        #logger.info(f"Tokens (detailed): {api.tokens} (trial {trial})")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Solve HotpotQA using LLMs.")
@@ -302,6 +175,7 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.2, help="Temperature for the model")
     parser.add_argument("--max_completion_tokens", type=int, default=256, help="Max completion tokens")
     parser.add_argument("--top_p", type=float, default=1.0, help="Top P for the model")
+    parser.add_argument("--trials", type=int, default=1, help="Number of trials to run")
     parser.add_argument("--stop", type=str, nargs="+", default=None, help="Stop sequence(s) for the model (e.g. Observation)")
     parser.add_argument("--logprobs", action="store_true", help="Enable logprobs for the model (required by some agents)")
     parser.add_argument("--dataset_path", type=str, default="./datasets/dataset_hotpotqa.csv.gz", help="Path to the HotPotQA dataset (CSV.GZ file)")
@@ -320,18 +194,10 @@ if __name__ == "__main__":
     # Load previous content
     with open(filename, "r") as f:
         contents = f.read()
-    
-    if args.batch_size == 1:
-        previous_trials = [int(num) for num in re.findall(r"Shared Namespace \(trial (\d+)\)", contents)]
-        trial = max(previous_trials) + 1 if previous_trials else 1
-        logger.info(f"Shared Namespace (trial {trial})")
-        cache_path = f"caches/correctness/hotpotqa/{args.method}/sns_{trial}"
-    else:
-        previous_trials = [int(num) for num in re.findall(r"Shared Namespace and Batch \(trial (\d+)\)", contents)]
-        trial = max(previous_trials) + 1 if previous_trials else 1
-        logger.info(f"Shared Namespace and Batch (trial {trial})")
-        cache_path = f"caches/correctness/hotpotqa/{args.method}/snsb_{trial}"
 
-    asyncio.run(run(args, trial=trial, cache_path=cache_path))
+    
+    cache_path = f"caches/correctness/hotpotqa/{args.method}/snsb_1"
+    asyncio.run(run(args, cache_path=cache_path))
+
     logger.info("\n"*3)
     clean_log(filename)

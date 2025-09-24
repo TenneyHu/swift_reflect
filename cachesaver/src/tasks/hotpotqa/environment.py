@@ -38,6 +38,7 @@ class EnvironmentHotpotQA(Environment):
             puzzle=state.puzzle,
             current_state=(state.current_state+step).strip(),
             steps=state.steps + [step],
+            trials=state.trials,
             answer=state.answer,
             docstore=state.docstore,
             randomness=randomness,
@@ -60,6 +61,8 @@ class EnvironmentHotpotQA(Environment):
         Checks if the current state is a final state.
         """
         try:
+            if state.current_state.strip() == "":
+                return False 
             expression = state.current_state.split("\n")[-2]
             action_type, _ = parse_action(expression.split(": ")[-1])
             if action_type == "Finish":
@@ -67,7 +70,7 @@ class EnvironmentHotpotQA(Environment):
             else:
                 return False
         except Exception as e:
-            print(e)
+            print('is final function error:', e)
             return False
 
     @staticmethod

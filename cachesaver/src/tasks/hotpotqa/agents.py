@@ -198,13 +198,13 @@ class AgentReactHotpotQA(Agent):
         examples = "(Example)\n" + "\n\n(Example)\n".join(
             [example for example in prompts.examples_react[:num_examples]]
         )
-        prompt = prompts.react.format(
-            examples=examples, question=state.puzzle, current_state=state.current_state
-        )
         
         if state.reflections:
             reflection_str = "\n".join(state.reflections)
             prompt_template = prompts.react_with_reflect
+
+            if state.summary:
+                reflection_str = state.summary
             current_prompt = prompt_template.format(
                 reflections_header=prompts.REFLECTION_HEADER,
                 reflections=reflection_str,
@@ -220,7 +220,7 @@ class AgentReactHotpotQA(Agent):
 
         # Generate the responses
         responses = await model.request(
-            prompt=prompt,
+            prompt=current_prompt,
             n=n,
             request_id=request_id,
             namespace=namespace,
@@ -377,14 +377,37 @@ class AgentEvaluateHotpotQA(Agent):
             cache[state.current_state] = value
         
         return value
+    
+class AgentSummaryHotpotQA(StateReturningAgent):
+    @staticmethod
+    async def act(
+        model: Model,
+        reflections: List[str],
+        namespace: str,
+        request_id: str,
+        params: DecodingParameters,
+    ):
 
+        summarization_prompt = prompts.summarize_reflections.format(
+            reflections="\n".join(reflections)
+        )
+
+        summary_responses = await model.request(
+            prompt=summarization_prompt,
+            n=1,
+            request_id=f"{request_id}-summary",
+            namespace=namespace,
+            params=params,
+        )
+        summary = summary_responses[0].strip()
+
+        return summary
 
 class AgentReflectHotpotQA(Agent):
     @staticmethod
     async def act(
         model: Model,
         state: StateHotpotQA,
-        n: int, # Number of responses/actions to generate
         namespace: str,
         request_id: str,
         params: DecodingParameters,
@@ -412,351 +435,6 @@ class AgentReflectHotpotQA(Agent):
 
         reflection_text = responses[0].strip()
         return reflection_text
-        
-
-class AgentTerminalReflectHotpotQA(StateReturningAgent):
-    @staticmethod
-    async def act(
-        model: Model,
-        state: StateHotpotQA,
-        n: int, # Number of responses/actions to generate
-        namespace: str,
-        request_id: str,
-        params: DecodingParameters,
-    ) -> List[str]:
-        actions = await AgentActHotpotQA.act(
-            model=model,
-            state=state,
-            n=n,
-            namespace=namespace,
-            request_id=request_id,
-            params=params,
-        )
-
-        # additional terminal reflection logic
-        states = [EnvironmentHotpotQA.step(state, action) for action in actions]
-
-        reflection_coroutines = []
-        reflected_state_idxs = []
-        for i, s in enumerate(states):
-            if not EnvironmentHotpotQA.is_final(s):
-                continue
-
-            # found a successful state
-            if EnvironmentHotpotQA.evaluate(s)[1] == 1:
-                return [s]
-            
-            # if the state has failed, we need to reflect on it
-            reflection_coroutines.append(
-                AgentReflectHotpotQA.act(
-                    model=model,
-                    state=s,
-                    n=1,
-                    namespace=namespace,
-                    request_id=f"{request_id}-reflect-{i}",
-                    params=params,
-                )
-            )
-
-            reflected_state_idxs.append(i)
-        
-        if len(reflection_coroutines) == 0:
-            return states
-        
-        thoughts = await asyncio.gather(*reflection_coroutines)
-        
-        for i in reflected_state_idxs:
-            states[i] = StateHotpotQA(
-                puzzle=state.puzzle,
-                current_state=state.puzzle,
-                steps=[],
-                answer=state.answer,
-                docstore=state.docstore,
-                randomness=state.randomness,
-                reflections=[thoughts.pop(0)] + state.reflections,
-                parent=state,
-            )
-
-        return states
-
-
-class AgentValueReduceReflectHotpotQA(StateReturningAgent, ValueFunctionRequiringAgent):
-    @staticmethod
-    async def act(
-        model: Model,
-        state: StateHotpotQA,
-        n: int, # Number of responses/actions to generate
-        namespace: str,
-        request_id: str,
-        params: DecodingParameters,
-        value_agent: AgentDict
-    ) -> List[str]:
-        actions = await AgentActHotpotQA.act(
-            model=model,
-            state=state,
-            n=n,
-            namespace=namespace,
-            request_id=request_id,
-            params=params,
-        )
-
-        # additional reflection logic: when value of new states is lower than current state
-        states = [EnvironmentHotpotQA.step(state, action) for action in actions]
-        failed_states = []
-        non_terminal_states = []
-        value_reduced_states = []
-        new_states = []
-
-        for s in states:
-            # return the winning state if it exists
-            if EnvironmentHotpotQA.evaluate(s)[0] == 1:
-                return [s]
-            
-            # add failing states to the list
-            if EnvironmentHotpotQA.is_final(s):
-                failed_states.append(s)
-            else:
-                non_terminal_states.append(s)        
-        
-        # get values for non terminal states
-        if len(non_terminal_states) > 0:
-            value_coroutines = [
-                value_agent["agent"].act(
-                    model=value_agent.get('model') or model,
-                    state=s,
-                    n=value_agent['num_agents'],
-                    namespace=namespace,
-                    request_id=f"{request_id}-value-{i}",
-                    params=value_agent['params'],
-                ) for i, s in enumerate(non_terminal_states)
-            ]
-            values = await asyncio.gather(*value_coroutines)
-            for i in range(len(non_terminal_states)):
-                if values[i] >= state.value:
-                    # if the value of the new state is higher than the current state, keep it
-                    new_states.append(replace(non_terminal_states[i], value=values[i]))
-                else:
-                    value_reduced_states.append(replace(non_terminal_states[i], value=values[i]))
-
-        # get values for failed states
-        if len(failed_states) > 0:
-            for i in range(len(failed_states)):
-                value_reduced_states.append(replace(failed_states[i], value=0))
-        
-        if len(value_reduced_states) == 0:
-            # if no states were reduced, return the new states
-            return new_states
-        
-
-        # reflect on the value reduced states
-        reflection_coroutines = []
-        for i, s in enumerate(value_reduced_states):
-            reflection_coroutines.append(
-                AgentReflectHotpotQA.act(
-                    model=model,
-                    state=s,
-                    n=1,
-                    namespace=namespace,
-                    request_id=f"{request_id}-reflect-{i}",
-                    params=params,
-                )
-            )
-
-        thoughts = await asyncio.gather(*reflection_coroutines)
-        num_thoughts = len(thoughts)
-
-        for i in range(num_thoughts):
-            old_state_with_thought = state.clone()
-            old_state_with_thought.reflections.insert(0, thoughts.pop(0))
-
-            # TODO: Adjust the value of the state after reflection
-            new_value = state.value # small increase in value for reflection
-            new_states.append(replace(old_state_with_thought, value=new_value))
-
-        return new_states
-    
-    
-class AgentReflectSummaryHotpotQA(StateReturningAgent):
-    @staticmethod
-    async def act(
-        model: Model,
-        state: StateHotpotQA,
-        n: int, # Number of responses/actions to generate
-        namespace: str,
-        request_id: str,
-        params: DecodingParameters,
-    ) -> List[StateHotpotQA]:
-        # 1. Act, using summary if available
-        num_examples = 2
-        examples = "(Example)\n" + "\n\n(Example)\n".join(
-            [example for example in prompts.examples_act[:num_examples]]
-        )
-
-        
-        if state.summary:
-            print(f"Using summary: {state.summary}")
-            print(len(state.reflections))
-            prompt_template = prompts.act_with_reflect
-            current_prompt = prompt_template.format(
-                reflections_header=prompts.REFLECTION_SUMMARY_HEADER,
-                reflections=state.summary,
-                examples=examples,
-                question=state.puzzle,
-                current_state=state.current_state
-            )
-        else:
-            prompt_template = prompts.act
-            current_prompt = prompt_template.format(
-                examples=examples, question=state.puzzle, current_state=state.current_state
-            )
-
-        responses = await model.request(
-            prompt=current_prompt,
-            n=n,
-            request_id=request_id,
-            namespace=namespace,
-            params=params,
-        )
-
-        patterns = r"(\b\w+)\s*(\[[^\]]*\])"
-        actions = []
-        for response_text in responses:
-            matches = re.findall(patterns, response_text)
-            for match_tuple in matches:
-                if match_tuple:
-                    actions.extend(join_matches(match_tuple))
-
-        states = [EnvironmentHotpotQA.step(state, action) for action in actions]
-
-        # 2. Reflect on terminal states
-        reflection_coroutines = []
-        reflected_state_idxs = []
-        for i, s in enumerate(states):
-            if not EnvironmentHotpotQA.is_final(s):
-                continue
-
-            if EnvironmentHotpotQA.evaluate(s)[1] == 1:
-                return [s]  # Found a successful state
-
-            reflection_coroutines.append(
-                AgentReflectHotpotQA.act(
-                    model=model,
-                    state=s,
-                    n=1,
-                    namespace=namespace,
-                    request_id=f"{request_id}-reflect-{i}",
-                    params=params,
-                )
-            )
-            reflected_state_idxs.append(i)
-
-        if not reflection_coroutines:
-            return states
-
-        new_reflections = await asyncio.gather(*reflection_coroutines)
-
-        # 3. Summarize reflections
-        all_reflections = state.reflections + new_reflections
-        summarization_prompt = prompts.summarize_reflections.format(
-            reflections="\n".join(all_reflections)
-        )
-
-        summary_responses = await model.request(
-            prompt=summarization_prompt,
-            n=1,
-            request_id=f"{request_id}-summary",
-            namespace=namespace,
-            params=params,
-        )
-        summary = summary_responses[0].strip()
-
-        # 4. Create new states for the next trial with summary
-        new_reflections_iter = iter(new_reflections)
-        for i in reflected_state_idxs:
-            states[i] = StateHotpotQA(
-                puzzle=state.puzzle,
-                current_state=state.puzzle,  # Reset for new trial
-                steps=[],
-                answer=state.answer,
-                docstore=state.docstore,
-                randomness=states[i].randomness,
-                reflections=state.reflections + [next(new_reflections_iter)],
-                parent=state,
-                summary=summary,
-            )
-
-        return states
-    
-    
-class AgentReflectPrevKHotpotQA(StateReturningAgent):
-    @staticmethod
-    async def act(
-        model: Model,
-        state: StateHotpotQA,
-        n: int, # Number of responses/actions to generate
-        namespace: str,
-        k: int, # Number of reflections to keep
-        request_id: str,
-        params: DecodingParameters,
-    ) -> List[StateHotpotQA]:
-        actions = await AgentActHotpotQA.act(
-            model=model,
-            state=state,
-            n=n,
-            namespace=namespace,
-            request_id=request_id,
-            params=params,
-        )
-
-        # additional terminal reflection logic
-        states = [EnvironmentHotpotQA.step(state, action) for action in actions]
-
-        reflection_coroutines = []
-        reflected_state_idxs = []
-        for i, s in enumerate(states):
-            if not EnvironmentHotpotQA.is_final(s):
-                continue
-
-            # found a successful state
-            if EnvironmentHotpotQA.evaluate(s)[1] == 1:
-                return [s]
-            
-            # if the state has failed, we need to reflect on it
-            reflection_coroutines.append(
-                AgentReflectHotpotQA.act(
-                    model=model,
-                    state=s,
-                    n=1,
-                    namespace=namespace,
-                    request_id=f"{request_id}-reflect-{i}",
-                    params=params,
-                )
-            )
-
-            reflected_state_idxs.append(i)
-        
-        if len(reflection_coroutines) == 0:
-            return states
-        
-        thoughts = await asyncio.gather(*reflection_coroutines)
-        
-        for i in reflected_state_idxs:
-            states[i] = StateHotpotQA(
-                puzzle=state.puzzle,
-                current_state=state.puzzle,
-                steps=[],
-                answer=state.answer,
-                docstore=state.docstore,
-                randomness=state.randomness,
-                reflections=[thoughts.pop(0)] + state.reflections[:k-1], # Only keep last k reflections
-                parent=state,
-                summary=state.summary,
-            )
-            
-        print(f'length of reflections: {len(states[0].reflections)}')
-
-        return states
-
 
 # ---Helper functions---
 def join_matches(matches) -> List[str]:
